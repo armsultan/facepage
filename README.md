@@ -1,4 +1,4 @@
-# Facepage Group Project
+# Redux Fullstack Template
 
 
 ## Installation
