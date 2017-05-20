@@ -3,25 +3,17 @@
  */
 import { createStore } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
-
 import rootReducer from './reducers/index';
-// let users = [
-//     {
-//         id: 0,
-//         name: 'Roger',  
-//         todoList: [],
-//         selected: false
-//     },
-//     {
-//         id: 1,
-//         name: 'Test',
-//         todoList: ['Test'],
-//         selected: false
-//     },
-// ];
+
 
 // This should be an outline of every possible state your app can be in.
-const defaultState = {};
+const defaultState = {
+    currentUser: {
+        name: "",
+        email: ""
+    },
+    loggedIn: false
+};
 
 const store = createStore(rootReducer, defaultState, composeWithDevTools());
 

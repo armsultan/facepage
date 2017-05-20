@@ -1,17 +1,21 @@
 import React from 'react';
-import { render } from 'react-dom';
 import { BrowserRouter, Route,Switch, Link } from 'react-router-dom';
+import { render } from 'react-dom';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
 import * as actionCreators from '../actions/actionCreator';
-import BasicExample from './BasicExample';
+import Homepage from './Homepage';
+// import BasicExample from './BasicExample';
+// import Users from '.Users';
+// import UserProfile from './UserProfile';
 
 // Redux requires to give a correct mapping of what State should ultimately look like. State is how React and Redux work. What the method below is doing is assigning state to an object, which will represent what props will look like as it descends through the app.
 let mapStateToProps = (state) => {
     return {
-        users: state.users
-    }
+        currentUser: state.currentUser,
+        loggedIn: state.loggedIn
+    }  
 };
 
 // Binds actions to the dispatch object. The dispatch object is the lifecycle of Redux that gets called whenever there is a state change. When it receives an event, it executes the method that we implemented in our actionCreator module.
@@ -25,9 +29,11 @@ class App extends React.Component {
     }
     render(){
         return (
-            <div>
-                <BasicExample />
-            </div>
+            <BrowserRouter>
+                <div>
+                    <Route path="/" render={(routeProps) => <Homepage {...this.props} {...routeProps}/>} />
+                </div>
+            </BrowserRouter>    
         );
     }
 }

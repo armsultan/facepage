@@ -3,27 +3,18 @@
  */
 
 // select a user
-export let selectUser = (userId) => {
-    console.log('dispatch select user');
+export let login = () => {
+    console.log('dispatch LOGIN');
     return {
-        type: 'SELECT_USER',
+        type: 'LOGIN',
         userId
     };
 }
 
-// add a todo for a user
-export let addTodo = (userId, task) => {
+export let logout = () => {
+    console.log('dispatch LOGOUT');
     return {
-        type: 'ADD_TODO',
-        task,
+        type: 'LOGOUT',
         userId
     };
 }
-
-export let removeTodo = (userId, index) => {
-    return {
-        type: 'REMOVE_TODO',
-        index,
-        userId
-    };
-};
