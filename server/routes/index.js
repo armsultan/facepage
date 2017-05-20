@@ -233,18 +233,7 @@ export default(app) => {
             } else {
                 // Save the updated document back to the database
                 console.log('updating person with ' + req.body.content)
-                putPerson(req.params.id, {
-                    $set: {
-                        firstName: req.body.firstName,
-                        lastName: req.body.lastName,
-                        age: req.body.age,
-                        gender: req.body.gender,
-                        school: req.body.school,
-                        job: req.body.job,
-                        email: req.body.email,
-                        password: req.body.password
-                    }
-                }, (err, item) => {
+                putPerson(req.params.id, req.body, (err, item) => {
                     if (err) {
                         res
                             .status(400)
