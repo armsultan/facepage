@@ -4,7 +4,10 @@
 ## Installation
     npm install
 
-Create two terminals. Run
+Create three terminals. Run
+
+    mongod
+
     npm start
 
 ... to get the server started.
