@@ -22,10 +22,11 @@ export default class Homepage extends React.Component{
                     <label>Password: <input type="password" ref="password" /></label>
                     <button type="button" >Sign in</button>
                     <div>- or -</div>
+                    <h3>Sign Up</h3>
                     <BrowserRouter>
                         <div>
-                        <Link to="/signup">Sign-Up</Link>
-                        <Route exact path="/signup" render={(routeProps)=> <Registration {...this.props} {...routeProps} />} />
+                        <Link to="/Registration">Sign-Up</Link>
+                        <Route exact path="/Registration" render={(routeProps)=> <Registration {...this.props} {...routeProps} />} />
                         </div>   
                     </BrowserRouter>
 

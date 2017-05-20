@@ -23,6 +23,11 @@ export default(app) => {
         res.render('index');
     });
 
+    app.get('/Registration', (req, res) => {
+        res.render('Registration');
+    });
+
+
     /* GET Status list /api */
     app.get('/api', function (req, res) {
         res.send('API is located at /api/status and /api/friends');
