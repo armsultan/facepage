@@ -26,17 +26,14 @@ export default class Homepage extends React.Component{
                     <h3>Sign Up</h3>
                     <BrowserRouter>
                         <div>
-<<<<<<< HEAD
                         <Link to="/signup">Sign-Up</Link>
                         <Route exact path="/signup" render={(routeProps)=> <Registration {...this.props} {...routeProps} />} />
 
                         <Link to="/findFriends">Find Friends</Link>
                         <Route exact path="/findFriends" render={(routeProps)=> <PeopleDirectory {...this.props} {...routeProps} />} />
 
-=======
                         <Link to="/Registration">Sign-Up</Link>
                         <Route exact path="/Registration" render={(routeProps)=> <Registration {...this.props} {...routeProps} />} />
->>>>>>> Alex
                         </div>   
                     </BrowserRouter>
 

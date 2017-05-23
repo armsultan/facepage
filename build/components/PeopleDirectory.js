@@ -12,7 +12,8 @@ export default class PeopleDirectory extends React.Component {
 
     componentDidMount() {
 
-        axios.get('http://localhost:3000/api/person')
+        axios
+            .get('http://localhost:3000/api/person')
             .then((response) => {
                 console.log(response.data);
                 //let people = response.data;
@@ -30,9 +31,32 @@ export default class PeopleDirectory extends React.Component {
         return (
             <div>
                 <h1>People Directory:</h1>
-                {this.state.peopleList.map((person, key) =>{
-                    return (<div key={key}>{person.firstName}</div>)
-                })}
+                <ul>
+                    {this
+                        .state
+                        .peopleList
+                        .map((person, key) => {
+                            return (
+                                <li className="person" key={key}>
+                                    <div className="personInfo">
+                                        <h3>
+                                            <a href="#">{person.firstName} {person.lastName}</a>
+                                        </h3>
+                                        <p>
+                                            <em className="job">{person.job}</em>
+                                        </p>
+                                        <p>
+                                            <em className="school">{person.school}</em>
+                                        </p>
+                                    </div>
+                                    <div className="personActions">
+                                    <button type="button">Add as friend</button>
+                                    <button type="button">Remove friend</button>                                   
+                                    </div>
+                                </li>
+                            )
+                        })}
+                </ul>
             </div>
         );
     }
