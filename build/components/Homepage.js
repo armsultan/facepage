@@ -2,6 +2,7 @@ import React from 'react';
 import { BrowserRouter, Route, Switch, Link } from 'react-router-dom';
 
 import Registration from './Registration';
+import PeopleDirectory from './PeopleDirectory';
 
 export default class Homepage extends React.Component{
     constructor(){
@@ -26,6 +27,10 @@ export default class Homepage extends React.Component{
                         <div>
                         <Link to="/signup">Sign-Up</Link>
                         <Route exact path="/signup" render={(routeProps)=> <Registration {...this.props} {...routeProps} />} />
+
+                        <Link to="/findFriends">Find Friends</Link>
+                        <Route exact path="/findFriends" render={(routeProps)=> <PeopleDirectory {...this.props} {...routeProps} />} />
+
                         </div>   
                     </BrowserRouter>
 

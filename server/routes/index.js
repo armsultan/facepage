@@ -6,7 +6,14 @@
 // import {createTask} from '../services/taskService'; import {createUser} from
 // '../services/userService';
 
-import {deleteStatus, getStatus, putStatus, getAllStatus, createStatus} from '../services/statusService';
+import {
+    deleteStatus,
+    getStatus,
+    putStatus,
+    genStatus,
+    getAllStatus,
+    createStatus
+} from '../services/statusService';
 import {
     deletePerson,
     genPerson,
@@ -217,10 +224,7 @@ export default(app) => {
             }
         });
     });
-
-// PUT Person 
-
-// SEE https://coursework.vschool.io/mongoose-crud/
+    // PUT Person SEE https://coursework.vschool.io/mongoose-crud/
     app.put('/api/person/:id', (req, res) => {
         getPerson({
             _id: req.params.id
