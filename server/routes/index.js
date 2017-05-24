@@ -18,9 +18,21 @@ import {
 
 export default(app) => {
 
+
+
     /* GET Status list /api */
     app.get('/', (req, res) => {
         res.render('index');
+    });
+
+    app.post('/user', (reg,res) => {
+        console.log(req.body);
+        createuser(req.body, (err,data) => {
+            if(!err){
+                console.log(data);
+            }
+            res.json(data)
+        });
     });
 
     app.get('/Registration', (req, res) => {
