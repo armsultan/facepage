@@ -32,9 +32,7 @@ export default class PeopleDirectory extends React.Component {
             <div>
                 <h1>People Directory:</h1>
                 <ul>
-                    {this
-                        .state
-                        .peopleList
+                    {this.state.peopleList
                         .map((person, key) => {
                             return (
                                 <li className="person" key={key}>

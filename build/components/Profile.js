@@ -8,7 +8,6 @@ export default class Profile extends React.Component {
         this.state = {
             profile: [],
             statuses: []
-
         };
     }
 
