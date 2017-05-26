@@ -14148,7 +14148,6 @@ var Profile = function (_React$Component) {
         _this.state = {
             profile: [],
             statuses: []
-
         };
         return _this;
     }
@@ -14282,12 +14281,26 @@ var Registration = function (_React$Component) {
     function Registration() {
         _classCallCheck(this, Registration);
 
-        return _possibleConstructorReturn(this, (Registration.__proto__ || Object.getPrototypeOf(Registration)).call(this));
+        var _this = _possibleConstructorReturn(this, (Registration.__proto__ || Object.getPrototypeOf(Registration)).call(this));
+
+        _this.handleClick = _this.handleClick.bind(_this);
+        return _this;
     }
 
     _createClass(Registration, [{
         key: 'handleClick',
-        value: function handleClick() {}
+        value: function handleClick(event) {
+            var name = this.refs.name.value;
+            var email = this.refs.email.value;
+            var password = this.refs.password.value;
+            axios.post('http://localhost:3000/users', {
+                email: email,
+                name: name,
+                password: password
+            }).then(function (res) {
+                console.log('WE HAVE REGISTERED A USER', RES);
+            });
+        }
     }, {
         key: 'render',
         value: function render() {
@@ -14315,6 +14328,14 @@ var Registration = function (_React$Component) {
                         'Password: ',
                         _react2.default.createElement('input', { type: 'password', ref: 'password' })
                     ),
+                    _react2.default.createElement('br', null),
+                    _react2.default.createElement(
+                        'label',
+                        null,
+                        'Confirm Password: ',
+                        _react2.default.createElement('input', { type: 'password', ref: 'passwordConfirm' })
+                    ),
+                    _react2.default.createElement('br', null),
                     _react2.default.createElement('br', null),
                     _react2.default.createElement(
                         'label',
@@ -14365,8 +14386,22 @@ var Registration = function (_React$Component) {
                     _react2.default.createElement('br', null),
                     _react2.default.createElement(
                         'button',
-                        { type: 'button' },
-                        'Sign in'
+                        { type: 'button', onClick: this.handleClick },
+                        'Register'
+                    ),
+                    _react2.default.createElement(
+                        'div',
+                        null,
+                        '- or -'
+                    ),
+                    _react2.default.createElement(
+                        'div',
+                        null,
+                        _react2.default.createElement(
+                            _reactRouterDom.Link,
+                            { to: '/' },
+                            'Home'
+                        )
                     )
                 )
             );

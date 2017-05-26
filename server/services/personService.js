@@ -35,35 +35,6 @@ export let getPerson = (p, next) => {
   Person.findById(p, next);
 };
 
-// export let putPerson = (id, p, next) => {
-
-//   let firstName = p.firstName || Person.firstName;
-//   let lastName = p.lastName || Person.lastName;
-//   let age = p.age || Person.age;
-//   let gender = p.gender || Person.gender;
-//   let school = p.school || Person.school;
-//   let job = p.job || Person.job;
-//   let email = p.email || Person.email;
-//   let password = p.password || Person.password;
-//   let statuses = p.statuses || Person.statuses;
-
-//   Person.findByIdAndUpdate(id, {
-//     $set: {
-//       firstName: firstName,
-//       lastName: lastName,
-//       age: age,
-//       gender: gender,
-//       school: school,
-//       job: job,
-//       email: email,
-//       password: password,
-//       statuses: statuses
-//     }
-//   }, next);
-
-// };
-
-
 export let putPerson = (id, p, next) => {
   Person.findByIdAndUpdate(id, p, next);
 };
