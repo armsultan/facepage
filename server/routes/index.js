@@ -34,10 +34,9 @@ export default(app) => {
         res.render('Registration');
     });
 
-
     /* GET Status list /api */
     app.get('/api', function (req, res) {
-        res.send('API is located at /api/status and /api/friends');
+        res.send('API is located at /api/status and /api/person');
     });
 
     // ============= /api/status =============
@@ -131,7 +130,7 @@ export default(app) => {
                     .send('error updating status item');
             } else {
                 // Save the updated document back to the database
-                console.log('updating status with ' + req.body.content)
+                console.log('updating status with ' + req.body)
                 putStatus(req.params.id, {
                     $set: {
                         content: req.body.content
@@ -231,28 +230,18 @@ export default(app) => {
     });
     // PUT Person SEE https://coursework.vschool.io/mongoose-crud/
     app.put('/api/person/:id', (req, res) => {
-        getPerson({
-            _id: req.params.id
-        }, (err, item) => {
-            // Handle any possible database errors
-            if (err) {
+        console.log('Updating person with ' + JSON.stringify(req.body));
+        putPerson(req.params.id, req.body, (err, item) => {
+            if (!err) {
+                console.log(item);
+                res
+                    .status(200)
+                    .send(item);
+                
+            } else {
                 res
                     .status(400)
                     .send('error updating person');
-            } else {
-                // Save the updated document back to the database
-                console.log('updating person with ' + req.body.content)
-                putPerson(req.params.id, req.body, (err, item) => {
-                    if (err) {
-                        res
-                            .status(400)
-                            .send('error updating person');
-                    } else {
-                        res
-                            .status(200)
-                            .send(item);
-                    }
-                });
             }
         });
     });

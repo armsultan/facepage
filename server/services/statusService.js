@@ -8,27 +8,26 @@ let Chance = require('chance');
 // Instantiate Chance so it can be used
 let chance = new Chance();
 
-
 import {Status} from '../models/Status.model';
 
 export let getAllStatus = (list, next) => {
-     Status.find(list, next);
+  Status.find(list, next);
 };
 
 export let createStatus = (status, next) => {
-     Status.create(status, next);
+  Status.create(status, next);
 };
 
 export let deleteStatus = (status, next) => {
-     Status.findOneAndRemove(status, next);
+  Status.findOneAndRemove(status, next);
 };
 
 export let getStatus = (status, next) => {
-     Status.findById(status, next);
+  Status.findById(status, next);
 };
 
 export let putStatus = (id, status, next) => {
-     Status.findByIdAndUpdate(id, status, next);
+  Status.findByIdAndUpdate(id, status, next);
 };
 
 // A function to generate x number of status items
@@ -37,9 +36,9 @@ export let genStatus = (number) => {
     let item = chance.sentence();
     let timeNow = Date();
     Status.create({
-    content: item,
-    time:  timeNow
-}, function (err, entry) {
+      content: item,
+      time: timeNow
+    }, function (err, entry) {
       if (err) {
         console.log("Error creating entry");
       } else {
@@ -47,4 +46,47 @@ export let genStatus = (number) => {
       }
     });
   }
+};
+
+// export let genStatusForPerson = (number) => {   let statusArray = [];   for
+// (let i = 0; i <= number; i++) {     let item = chance.sentence();     let
+// timeNow = Date();     Status.create({       content: item,       time:
+// timeNow     }, (err, entry) => {       if (err) {         return null; } else
+// {         statusArray[i] = entry._id;         console.log(entry._id);      }
+//  });   }   return statusArray; };
+
+export let genStatusForPerson = (number) => {
+
+  let statusArray = [];
+  let promiseArray = [];
+
+  // Do an async task async task and then...
+  for (let i = 0; i <= number; i++) {
+    let item = chance.sentence();
+    let timeNow = Date();
+
+    Status.create({
+      content: item,
+      time: timeNow
+    }, (err, entry) => {
+      if (err) {
+        return null;
+      } else {
+        statusArray[i] = Promise.resolve(entry._id);
+
+        console.log(statusArray[i]._v);
+      }
+    })
+
+  }
+
+  Promise
+    .all(statusArray)
+    .then(values => {
+      console.log(statusArray);
+    })
+    .catch(reason => {
+      console.log(reason)
+    });
+
 };

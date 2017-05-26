@@ -8014,7 +8014,7 @@ var Homepage = function (_React$Component) {
         var _this = _possibleConstructorReturn(this, (Homepage.__proto__ || Object.getPrototypeOf(Homepage)).call(this));
 
         _this.state = {
-            userId: "59239587d1dc6233ea56bf0a"
+            userId: "5927a53c86045133b4d3ca00"
         };
         return _this;
     }
@@ -14146,7 +14146,9 @@ var Profile = function (_React$Component) {
         var _this = _possibleConstructorReturn(this, (Profile.__proto__ || Object.getPrototypeOf(Profile)).call(this));
 
         _this.state = {
-            profile: []
+            profile: [],
+            statuses: []
+
         };
         return _this;
     }
@@ -14157,9 +14159,11 @@ var Profile = function (_React$Component) {
             var _this2 = this;
 
             _axios2.default.get('http://localhost:3000/api/person/' + this.props.userId).then(function (response) {
-                console.log(response.data);
-                //let people = response.data;
+                //console.log(response.data); let people = response.data;
                 _this2.setState({ profile: response.data });
+                _this2.setState({ statuses: response.data.statuses });
+                // this.state.profile.statuses.map
+                console.log(_this2.state.statuses);
             }).catch(function (error) {
                 console.log(error);
             });
@@ -14167,8 +14171,8 @@ var Profile = function (_React$Component) {
     }, {
         key: 'render',
         value: function render() {
-            var test = this.state.profile;
-            console.log(test);
+            //let test = this.state.profile; console.log(test);
+            var test = this.state.profile.statuses;
             return _react2.default.createElement(
                 'div',
                 null,
@@ -14182,7 +14186,7 @@ var Profile = function (_React$Component) {
                     { className: 'myProfile' },
                     _react2.default.createElement(
                         'div',
-                        { className: 'personInfo' },
+                        { className: 'myPersonInfo' },
                         _react2.default.createElement(
                             'h3',
                             null,
@@ -14211,6 +14215,28 @@ var Profile = function (_React$Component) {
                                 { className: 'school' },
                                 this.state.profile.school
                             )
+                        )
+                    ),
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'myStatus' },
+                        _react2.default.createElement(
+                            'form',
+                            { action: '/' },
+                            'Update Status: ',
+                            _react2.default.createElement('input', { type: 'text', name: 'status' }),
+                            _react2.default.createElement('input', { type: 'submit', value: 'Submit' })
+                        ),
+                        _react2.default.createElement(
+                            'ul',
+                            null,
+                            this.state.statuses.map(function (status, key) {
+                                return _react2.default.createElement(
+                                    'li',
+                                    { className: 'status', key: key },
+                                    status
+                                );
+                            })
                         )
                     )
                 )

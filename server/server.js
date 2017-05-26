@@ -25,7 +25,7 @@ app.set('view engine', '.hbs');
 app.use(express.static('public'));
 
 // middleware package that allows us to read the body in request objects.
-app.use(bodyParser.json())
+app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
   extended: true
 }));
