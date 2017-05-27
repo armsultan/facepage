@@ -7,8 +7,16 @@ export default class Profile extends React.Component {
         super();
         this.state = {
             profile: [],
-            statuses: []
+            update:'',
+            statusIds: [],
+            statusContent: []
         };
+
+            this.handleChange = this.handleChange.bind(this);
+            this.handleClick = this.handleClick.bind(this);
+            this.updateStatuses = this.updateStatuses.bind(this);
+
+
     }
 
     componentDidMount() {
@@ -16,11 +24,9 @@ export default class Profile extends React.Component {
         axios
             .get('http://localhost:3000/api/person/' + this.props.userId)
             .then((response) => {
-                //console.log(response.data); let people = response.data;
                 this.setState({profile: response.data});
-                this.setState({statuses: response.data.statuses});
-               // this.state.profile.statuses.map
-               console.log(this.state.statuses);
+                this.setState({statusIds: response.data.statuses});
+                console.log(this.state.statusIds);
             })
             .catch((error) => {
                 console.log(error);
@@ -28,9 +34,54 @@ export default class Profile extends React.Component {
 
     }
 
+handleChange(event){
+        this.setState({update: event.target.value});
+
+}
+
+
+updateStatuses(statusId){
+     this.state.statusIds.map((statusId) => {
+        axios
+            .get('http://localhost:3000/api/status/' + statusId)
+            .then(res => {
+                this.setState({statusContent: this.state.statusContent.concat([res.content])});
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+     })
+}
+
+
+    handleClick(event) {
+
+        event.preventDefault(); // We want to prevent the default action since in react we want to prevent a page reload from a form submit https://developer.mozilla.org/samples/domref/dispatchEvent.html
+        axios
+            .post('http://localhost:3000/api/status/', {content: this.state.update})
+            .then(res => {
+                console.log('UPDATED STATUS WITH ID: ', res.data._id);
+
+                this.setState({statusIds: this.state.statusIds.concat([res.data._id])});
+                console.log(this.state.statusIds);
+
+                // Now update statuses object for the person
+                axios.put('http://localhost:3000/api/person/' + this.props.userId, {statuses: this.state.statusIds})
+                .then(res => {
+                    console.log('UPDATED PERSON WITH: ', res.data._id);
+                    this.updateStatuses(res.data._id);
+                })
+                .catch((error) => {
+                console.log(error);
+            });
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    }
+
     render() {
-        //let test = this.state.profile; console.log(test);
-        let test = this.state.profile.statuses;
+
         return (
             <div>
                 <h1>My Profile</h1>
@@ -48,27 +99,26 @@ export default class Profile extends React.Component {
                     </div>
                     <div className="myStatus">
 
+                        <form action="/">
+                            Update Status:
+                            <input type="text" name="status" value={this.state.update} onChange={this.handleChange}/>
 
-<form action="/">
-Update Status: <input type="text" name="status"/>
-
-<input type="submit" value="Submit" />
-</form>
-
-
-
+                            <input type="submit" value="Submit" onClick={this.handleClick}/>
+                        </form>
 
                         <ul>
 
-                            {
-                                this.state.statuses.map((status, key) => {
+                            {this
+                                .state
+                                .statusIds.slice(0).reverse()
+                                .map((status, key) => {
                                     return (
                                         <li className="status" key={key}>
-                                            {status}
-                                        </li>
+                                         {status}
+                                         </li>
                                     )
                                 })
-                        }
+}
                         </ul>
 
                     </div>

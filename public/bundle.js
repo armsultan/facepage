@@ -14147,8 +14147,15 @@ var Profile = function (_React$Component) {
 
         _this.state = {
             profile: [],
-            statuses: []
+            update: '',
+            statusIds: [],
+            statusContent: []
         };
+
+        _this.handleChange = _this.handleChange.bind(_this);
+        _this.handleClick = _this.handleClick.bind(_this);
+        _this.updateStatuses = _this.updateStatuses.bind(_this);
+
         return _this;
     }
 
@@ -14158,11 +14165,50 @@ var Profile = function (_React$Component) {
             var _this2 = this;
 
             _axios2.default.get('http://localhost:3000/api/person/' + this.props.userId).then(function (response) {
-                //console.log(response.data); let people = response.data;
                 _this2.setState({ profile: response.data });
-                _this2.setState({ statuses: response.data.statuses });
-                // this.state.profile.statuses.map
-                console.log(_this2.state.statuses);
+                _this2.setState({ statusIds: response.data.statuses });
+                console.log(_this2.state.statusIds);
+            }).catch(function (error) {
+                console.log(error);
+            });
+        }
+    }, {
+        key: 'handleChange',
+        value: function handleChange(event) {
+            this.setState({ update: event.target.value });
+        }
+    }, {
+        key: 'updateStatuses',
+        value: function updateStatuses(statusId) {
+            var _this3 = this;
+
+            this.state.statusIds.map(function (statusId) {
+                _axios2.default.get('http://localhost:3000/api/status/' + statusId).then(function (res) {
+                    _this3.setState({ statusContent: _this3.state.statusContent.concat([res.content]) });
+                }).catch(function (error) {
+                    console.log(error);
+                });
+            });
+        }
+    }, {
+        key: 'handleClick',
+        value: function handleClick(event) {
+            var _this4 = this;
+
+            event.preventDefault(); // We want to prevent the default action since in react we want to prevent a page reload from a form submit https://developer.mozilla.org/samples/domref/dispatchEvent.html
+            _axios2.default.post('http://localhost:3000/api/status/', { content: this.state.update }).then(function (res) {
+                console.log('UPDATED STATUS WITH ID: ', res.data._id);
+
+                _this4.setState({ statusIds: _this4.state.statusIds.concat([res.data._id]) });
+                console.log(_this4.state.statusIds);
+
+                // Now update statuses object for the person
+                _axios2.default.put('http://localhost:3000/api/person/' + _this4.props.userId, { statuses: _this4.state.statusIds }).then(function (res) {
+                    console.log('UPDATED PERSON WITH: ', res.data._id);
+                    _this4.updateStatuses(res.data._id);
+                }).catch(function (error) {
+                    console.log(error);
+                });
             }).catch(function (error) {
                 console.log(error);
             });
@@ -14170,8 +14216,7 @@ var Profile = function (_React$Component) {
     }, {
         key: 'render',
         value: function render() {
-            //let test = this.state.profile; console.log(test);
-            var test = this.state.profile.statuses;
+
             return _react2.default.createElement(
                 'div',
                 null,
@@ -14222,14 +14267,14 @@ var Profile = function (_React$Component) {
                         _react2.default.createElement(
                             'form',
                             { action: '/' },
-                            'Update Status: ',
-                            _react2.default.createElement('input', { type: 'text', name: 'status' }),
-                            _react2.default.createElement('input', { type: 'submit', value: 'Submit' })
+                            'Update Status:',
+                            _react2.default.createElement('input', { type: 'text', name: 'status', value: this.state.update, onChange: this.handleChange }),
+                            _react2.default.createElement('input', { type: 'submit', value: 'Submit', onClick: this.handleClick })
                         ),
                         _react2.default.createElement(
                             'ul',
                             null,
-                            this.state.statuses.map(function (status, key) {
+                            this.state.statusIds.slice(0).reverse().map(function (status, key) {
                                 return _react2.default.createElement(
                                     'li',
                                     { className: 'status', key: key },
