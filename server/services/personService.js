@@ -8,6 +8,16 @@ let Chance = require('chance');
 // Instantiate Chance so it can be used
 let chance = new Chance();
 import {Person} from '../models/Person.model';
+import {Status} from '../models/Status.model';
+import {
+    deleteStatus,
+    getStatus,
+    putStatus,
+    genStatus,
+    getAllStatus,
+    createStatus,
+    genStatusForPerson
+} from '../services/statusService';
 
 export let getAllPerson = (list, next) => {
   Person.find(list, next);
@@ -26,30 +36,9 @@ export let getPerson = (p, next) => {
 };
 
 export let putPerson = (id, p, next) => {
-
-  let firstName = p.firstName || Person.firstName;
-  let lastName = p.lastName || Person.lastName;
-  let age = p.age || Person.age;
-  let gender = p.gender || Person.gender;
-  let school = p.school || Person.school;
-  let job = p.job || Person.job;
-  let email = p.email || Person.email;
-  let password = p.password || Person.password;
-
-  Person.findByIdAndUpdate(id, {
-    $set: {
-      firstName: firstName,
-      lastName: lastName,
-      age: age,
-      gender: gender,
-      school: school,
-      job: job,
-      email: email,
-      password: password
-    }
-  }, next);
-
+  Person.findByIdAndUpdate(id, p, next);
 };
+
 // A function to generate x number of people
 export let genPerson = (number) => {
   for (let i = 0; i <= number; i++) {
@@ -62,23 +51,27 @@ export let genPerson = (number) => {
     let job = chance.sentence();
     let email = chance.email();
     let password = chance.word({length: 8});
-    //let statuses = get a random amount of status ids
 
-    Person.create({
-      firstName: firstName,
-      lastName: lastName,
-      age: age,
-      gender: gender,
-      school: school,
-      job: job,
-      email: email,
-      password: password
-    }, function (err, entry) {
-      if (err) {
-        console.log(err);
-      } else {
-        console.log(entry);
-      }
+    let statusPromise = genStatusForPerson(20);
+    statusPromise.then((statuses) => {
+      Person.create({
+        firstName: firstName,
+        lastName: lastName,
+        age: age,
+        gender: gender,
+        school: school,
+        job: job,
+        email: email,
+        password: password,
+        statuses: statuses
+      }, function (err, person) {
+        if (err) {
+          console.log(err);
+        } else {
+          console.log(person.statuses);
+        }
+      });
     });
+    
   }
 };

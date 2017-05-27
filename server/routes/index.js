@@ -6,7 +6,14 @@
 // import {createTask} from '../services/taskService'; import {createUser} from
 // '../services/userService';
 
-import {deleteStatus, getStatus, putStatus, getAllStatus, createStatus} from '../services/statusService';
+import {
+    deleteStatus,
+    getStatus,
+    putStatus,
+    genStatus,
+    getAllStatus,
+    createStatus
+} from '../services/statusService';
 import {
     deletePerson,
     genPerson,
@@ -39,10 +46,9 @@ export default(app) => {
         res.render('Registration');
     });
 
-
     /* GET Status list /api */
     app.get('/api', function (req, res) {
-        res.send('API is located at /api/status and /api/friends');
+        res.send('API is located at /api/status and /api/person');
     });
 
     // ============= /api/status =============
@@ -136,7 +142,7 @@ export default(app) => {
                     .send('error updating status item');
             } else {
                 // Save the updated document back to the database
-                console.log('updating status with ' + req.body.content)
+                console.log('updating status with ' + req.body)
                 putStatus(req.params.id, {
                     $set: {
                         content: req.body.content
@@ -200,14 +206,15 @@ export default(app) => {
     });
 
     app.post('/api/person', (req, res) => {
+        console.log(req.body);
         createPerson(req.body, (err, item) => {
             if (!err) {
                 console.log(item);
-                // res.json(item);
                 res
                     .status(201)
-                    .send(item);
+                    .json(item);
             } else {
+                console.log(err);
                 res
                     .status(400)
                     .json(err);
@@ -234,33 +241,20 @@ export default(app) => {
             }
         });
     });
-
-// PUT Person 
-
-// SEE https://coursework.vschool.io/mongoose-crud/
+    // PUT Person SEE https://coursework.vschool.io/mongoose-crud/
     app.put('/api/person/:id', (req, res) => {
-        getPerson({
-            _id: req.params.id
-        }, (err, item) => {
-            // Handle any possible database errors
-            if (err) {
+        console.log('Updating person with ' + JSON.stringify(req.body));
+        putPerson(req.params.id, req.body, (err, item) => {
+            if (!err) {
+                console.log(item);
+                res
+                    .status(200)
+                    .send(item);
+                
+            } else {
                 res
                     .status(400)
                     .send('error updating person');
-            } else {
-                // Save the updated document back to the database
-                console.log('updating person with ' + req.body.content)
-                putPerson(req.params.id, req.body, (err, item) => {
-                    if (err) {
-                        res
-                            .status(400)
-                            .send('error updating person');
-                    } else {
-                        res
-                            .status(200)
-                            .send(item);
-                    }
-                });
             }
         });
     });

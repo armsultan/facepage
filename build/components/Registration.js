@@ -12,11 +12,11 @@ export default class Registration extends React.Component {
         let female = this.refs.female.checked;
         let other = this.refs.other.checked;
         if (male)
-        return "male"
+        return "Male"
         if (female)
-        return "female"
+        return "Female"
         if (other)
-        return "other"
+        return "Other"
     }
 
     validPasswords(){
@@ -27,7 +27,8 @@ export default class Registration extends React.Component {
         
 
     handleClick(event) {
-        if(validPasswords()){
+        if(this.validPasswords()){
+            console.log("password OK");
         let firstname = this.refs.firstname.value;
         let lastname = this.refs.lastname.value;
         let age = this.refs.age.value;
@@ -36,37 +37,34 @@ export default class Registration extends React.Component {
         let job = this.refs.job.value;
         let email = this.refs.email.value;
         let password = this.refs.password.value;
-//         try {
-//             axios.post('http://localhost:3000/user', {
-//                 email,
-//                 name,
-//                 password
-//             }).then(res => {
-//                 console.log('WE HAVE REGISTERED A USER', res.data.currentUser);
-//                 if(res.data.loggedIn){
-//                     this.props.history.push('/secure');
-//                 }
-//                 this.props.login(res.data.currentUser);
-//             });
-//         }catch(e){
-//             console.error(`Caught: $(e)`);
-//         }
-//     }
-//         else {
-//         this.setState({
-//             errors: {
-//                 mismatchPasswords: true
-//             }
-//         });
-//     }
-// }
 
-    render(){
-        let errorMessages = [];
-        if (this.state.errors.mismatchPasswords){
-            React.createElement('div', null, 'Error, passwords do not match.');
-            errorMessages.push(<div className="error message"></div>)
+console.log(firstname + " " + lastname+ " " + lastname + " " + age + " " + gender + " " + school+ " " + job + " " + email + " " + password);
+
+axios.post('http://localhost:3000/api/person',{
+    firstName: firstname,
+  lastName: lastname,
+  age: age,
+  gender: gender,
+  school: school,
+  job: job,
+  email: email,
+  password: password
+})
+.then(res => {
+console.log('WE HAVE REGISTERED A USER with ID ', res.data._id);
+})
+.catch(error => {
+console.log(error)  
+})
         }
+    }
+    render(){
+    // {
+    //     let errorMessages = [];
+    //     if (this.state.errors.mismatchPasswords){
+    //         React.createElement('div', null, 'Error, passwords do not match.');
+    //         errorMessages.push(<div className="error message"></div>)
+    //     }
         return (
             <div>
                 <h1>Registration</h1>
@@ -74,7 +72,6 @@ export default class Registration extends React.Component {
                     <label>Email: <input type="email" ref="email" /></label><br />
                     <label>Password: <input type="password" ref="password" /></label><br />
                     <label>Confirm Password: <input type="password" ref="passwordConfirm" /></label><br />
-                    {errorMessages}
                     <label>First Name: <input type="text" ref="firstname" /></label><br />
                     <label>Last Name: <input type="text" ref="lastname" /></label><br />
                     <label>Age: <input type="number" ref="age" /></label><br />
@@ -94,4 +91,4 @@ export default class Registration extends React.Component {
             </div>
         );
     }
-}
+        }
