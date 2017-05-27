@@ -57,36 +57,33 @@ export let genStatus = (number) => {
 
 export let genStatusForPerson = (number) => {
 
-  let statusArray = [];
+  // let statusArray = [];
   let promiseArray = [];
-
   // Do an async task async task and then...
   for (let i = 0; i <= number; i++) {
     let item = chance.sentence();
     let timeNow = Date();
 
-    Status.create({
-      content: item,
-      time: timeNow
-    }, (err, entry) => {
-      if (err) {
-        return null;
-      } else {
-        statusArray[i] = Promise.resolve(entry._id);
+    promiseArray.push(new Promise((resolve, reject) => {
+      Status.create({
+        content: item,
+        time: timeNow
+      }, (err, entry) => {
+        if (err) {
+          reject('error');
+          //return null;
+        } else {
+          // statusArray[i] = Promise.resolve(entry._id);
+          //console.log('STATUS: ', entry);
+          //console.log(statusArray[i]._id);
+          resolve(entry);
+        }
+      });
+    }));
 
-        console.log(statusArray[i]._v);
-      }
-    })
 
   }
-
-  Promise
-    .all(statusArray)
-    .then(values => {
-      console.log(statusArray);
-    })
-    .catch(reason => {
-      console.log(reason)
-    });
+  //console.log(statusArray);
+return Promise.all(promiseArray);
 
 };

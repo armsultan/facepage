@@ -206,14 +206,15 @@ export default(app) => {
     });
 
     app.post('/api/person', (req, res) => {
+        console.log(req.body);
         createPerson(req.body, (err, item) => {
             if (!err) {
                 console.log(item);
-                // res.json(item);
                 res
                     .status(201)
-                    .send(item);
+                    .json(item);
             } else {
+                console.log(err);
                 res
                     .status(400)
                     .json(err);

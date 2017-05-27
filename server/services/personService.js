@@ -52,23 +52,26 @@ export let genPerson = (number) => {
     let email = chance.email();
     let password = chance.word({length: 8});
 
-    let status = genStatusForPerson(20);
-//console.log(status);
-    Person.create({
-      firstName: firstName,
-      lastName: lastName,
-      age: age,
-      gender: gender,
-      school: school,
-      job: job,
-      email: email,
-      password: password
-    }, function (err, entry) {
-      if (err) {
-        console.log(err);
-      } else {
-        console.log(status);
-      }
+    let statusPromise = genStatusForPerson(20);
+    statusPromise.then((statuses) => {
+      Person.create({
+        firstName: firstName,
+        lastName: lastName,
+        age: age,
+        gender: gender,
+        school: school,
+        job: job,
+        email: email,
+        password: password,
+        statuses: statuses
+      }, function (err, person) {
+        if (err) {
+          console.log(err);
+        } else {
+          console.log(person.statuses);
+        }
+      });
     });
+    
   }
 };
