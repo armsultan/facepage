@@ -19,6 +19,24 @@ export default class Profile extends React.Component {
 
     }
 
+updateStatuses(){
+    
+     this.state.statusIds.map((statusId) => {
+
+        axios
+            .get('http://localhost:3000/api/status/' + statusId)
+            .then(res => {
+                //this.setState({statusContent: this.state.statusContent.concat([res.data.content])});
+                this.setState({statusContent: this.state.statusContent.concat([res.data])});
+
+
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+     })
+}
+
     componentDidMount() {
 
         axios
@@ -26,7 +44,13 @@ export default class Profile extends React.Component {
             .then((response) => {
                 this.setState({profile: response.data});
                 this.setState({statusIds: response.data.statuses});
+
+                this.updateStatuses();
                 console.log(this.state.statusIds);
+                console.log(this.state.statusContent);
+
+
+
             })
             .catch((error) => {
                 console.log(error);
@@ -40,18 +64,7 @@ handleChange(event){
 }
 
 
-updateStatuses(statusId){
-     this.state.statusIds.map((statusId) => {
-        axios
-            .get('http://localhost:3000/api/status/' + statusId)
-            .then(res => {
-                this.setState({statusContent: this.state.statusContent.concat([res.content])});
-            })
-            .catch((error) => {
-                console.log(error);
-            });
-     })
-}
+
 
 
     handleClick(event) {
@@ -69,7 +82,7 @@ updateStatuses(statusId){
                 axios.put('http://localhost:3000/api/person/' + this.props.userId, {statuses: this.state.statusIds})
                 .then(res => {
                     console.log('UPDATED PERSON WITH: ', res.data._id);
-                    this.updateStatuses(res.data._id);
+                    this.updateStatuses(res.data.statuses);
                 })
                 .catch((error) => {
                 console.log(error);
@@ -106,15 +119,18 @@ updateStatuses(statusId){
                             <input type="submit" value="Submit" onClick={this.handleClick}/>
                         </form>
 
-                        <ul>
+                        
+<h3>Timeline:</h3>
+<ul>
 
                             {this
                                 .state
-                                .statusIds.slice(0).reverse()
+                                .statusContent.slice(0).reverse()
                                 .map((status, key) => {
                                     return (
                                         <li className="status" key={key}>
-                                         {status}
+                                         {status.content} <small>
+                                         {status.time}</small>
                                          </li>
                                     )
                                 })

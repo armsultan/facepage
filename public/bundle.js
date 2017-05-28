@@ -14160,14 +14160,32 @@ var Profile = function (_React$Component) {
     }
 
     _createClass(Profile, [{
-        key: 'componentDidMount',
-        value: function componentDidMount() {
+        key: 'updateStatuses',
+        value: function updateStatuses() {
             var _this2 = this;
 
+            this.state.statusIds.map(function (statusId) {
+
+                _axios2.default.get('http://localhost:3000/api/status/' + statusId).then(function (res) {
+                    //this.setState({statusContent: this.state.statusContent.concat([res.data.content])});
+                    _this2.setState({ statusContent: _this2.state.statusContent.concat([res.data]) });
+                }).catch(function (error) {
+                    console.log(error);
+                });
+            });
+        }
+    }, {
+        key: 'componentDidMount',
+        value: function componentDidMount() {
+            var _this3 = this;
+
             _axios2.default.get('http://localhost:3000/api/person/' + this.props.userId).then(function (response) {
-                _this2.setState({ profile: response.data });
-                _this2.setState({ statusIds: response.data.statuses });
-                console.log(_this2.state.statusIds);
+                _this3.setState({ profile: response.data });
+                _this3.setState({ statusIds: response.data.statuses });
+
+                _this3.updateStatuses();
+                console.log(_this3.state.statusIds);
+                console.log(_this3.state.statusContent);
             }).catch(function (error) {
                 console.log(error);
             });
@@ -14176,19 +14194,6 @@ var Profile = function (_React$Component) {
         key: 'handleChange',
         value: function handleChange(event) {
             this.setState({ update: event.target.value });
-        }
-    }, {
-        key: 'updateStatuses',
-        value: function updateStatuses(statusId) {
-            var _this3 = this;
-
-            this.state.statusIds.map(function (statusId) {
-                _axios2.default.get('http://localhost:3000/api/status/' + statusId).then(function (res) {
-                    _this3.setState({ statusContent: _this3.state.statusContent.concat([res.content]) });
-                }).catch(function (error) {
-                    console.log(error);
-                });
-            });
         }
     }, {
         key: 'handleClick',
@@ -14205,7 +14210,7 @@ var Profile = function (_React$Component) {
                 // Now update statuses object for the person
                 _axios2.default.put('http://localhost:3000/api/person/' + _this4.props.userId, { statuses: _this4.state.statusIds }).then(function (res) {
                     console.log('UPDATED PERSON WITH: ', res.data._id);
-                    _this4.updateStatuses(res.data._id);
+                    _this4.updateStatuses(res.data.statuses);
                 }).catch(function (error) {
                     console.log(error);
                 });
@@ -14272,13 +14277,24 @@ var Profile = function (_React$Component) {
                             _react2.default.createElement('input', { type: 'submit', value: 'Submit', onClick: this.handleClick })
                         ),
                         _react2.default.createElement(
+                            'h3',
+                            null,
+                            'Timeline:'
+                        ),
+                        _react2.default.createElement(
                             'ul',
                             null,
-                            this.state.statusIds.slice(0).reverse().map(function (status, key) {
+                            this.state.statusContent.slice(0).reverse().map(function (status, key) {
                                 return _react2.default.createElement(
                                     'li',
                                     { className: 'status', key: key },
-                                    status
+                                    status.content,
+                                    ' ',
+                                    _react2.default.createElement(
+                                        'small',
+                                        null,
+                                        status.time
+                                    )
                                 );
                             })
                         )
