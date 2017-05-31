@@ -64,11 +64,7 @@ export let genStatusForPerson = (number) => {
       }, (err, entry) => {
         if (err) {
           reject('error');
-          //return null;
         } else {
-          // statusArray[i] = Promise.resolve(entry._id);
-          //console.log('STATUS: ', entry);
-          //console.log(statusArray[i]._id);
           resolve(entry);
         }
       });
@@ -76,7 +72,6 @@ export let genStatusForPerson = (number) => {
 
 
   }
-  //console.log(statusArray);
 return Promise.all(promiseArray);
 
 };

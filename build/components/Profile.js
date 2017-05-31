@@ -196,7 +196,8 @@ export default class Profile extends React.Component {
                                 .map((friend, key) => {
                                     return (
                                         <li className="friend" key={key}>
-                                            <h4>{friend.firstName}{" "}{friend.lastName}</h4>
+
+                                         <h4><a href={'/profile/' + friend._id}>{friend.firstName} {friend.lastName}</a></h4>
                                             <small>
                                                 {friend.job}</small>
                                         </li>

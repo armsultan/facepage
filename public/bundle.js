@@ -8020,7 +8020,7 @@ var Homepage = function (_React$Component) {
         var _this = _possibleConstructorReturn(this, (Homepage.__proto__ || Object.getPrototypeOf(Homepage)).call(this));
 
         _this.state = {
-            userId: "592f05605f6595748bd2bf61"
+            userId: "592f2ae0329c0bef347d8858"
         };
         return _this;
     }
@@ -14405,9 +14405,13 @@ var Profile = function (_React$Component) {
                                     _react2.default.createElement(
                                         'h4',
                                         null,
-                                        friend.firstName,
-                                        " ",
-                                        friend.lastName
+                                        _react2.default.createElement(
+                                            'a',
+                                            { href: '/profile/' + friend._id },
+                                            friend.firstName,
+                                            ' ',
+                                            friend.lastName
+                                        )
                                     ),
                                     _react2.default.createElement(
                                         'small',

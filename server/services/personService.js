@@ -11,16 +11,19 @@ let chance = new Chance();
 //Load axios
 import axios from 'axios';
 
+//load faker
+let faker = require('faker');
+
 import {Person} from '../models/Person.model';
 import {Status} from '../models/Status.model';
 import {
-    deleteStatus,
-    getStatus,
-    putStatus,
-    genStatus,
-    getAllStatus,
-    createStatus,
-    genStatusForPerson
+  deleteStatus,
+  getStatus,
+  putStatus,
+  genStatus,
+  getAllStatus,
+  createStatus,
+  genStatusForPerson
 } from '../services/statusService';
 
 export let getAllPerson = (list, next) => {
@@ -43,28 +46,27 @@ export let putPerson = (id, p, next) => {
   Person.findByIdAndUpdate(id, p, next);
 };
 
-function getProfilePic(){
+function getProfilePic() {
 
-new Promise((resolve, reject) => {
-      
- axios.get('https://randomuser.me/api/')
-  .then(function (res) {
-    resolve(res.data.results.picture.large);
-  })
-  .catch(function (err) {
-    reject("");
+  new Promise((resolve, reject) => {
+    axios
+      .get('https://randomuser.me/api/')
+      .then(function (res) {
+        resolve(res.data.results.picture.large);
+      })
+      .catch(function (err) {
+        reject("");
+      });
+
   });
 
-});
-
-return Promise;
+  return Promise;
 
 };
 
-
 // A function to generate x number of people
 export let genPerson = (number) => {
-  
+
   for (let i = 0; i <= number; i++) {
 
     let firstName = chance.first();
@@ -72,40 +74,35 @@ export let genPerson = (number) => {
     let age = chance.age();
     let gender = chance.gender();
     let school = chance.province({full: true});
-    let job = chance.sentence({words: 2})
+    let job = faker.name.jobTitle() +', ' + faker.company.companyName();
     let email = chance.email();
-    let password = chance.word({length: 8});
-    let profilePicture = chance.avatar({fileExtension: 'jpg'});
-
+    let password = faker.internet.password();
+   // let profilePicture = chance.avatar({fileExtension: 'jpg'});
+    let profilePicture = faker.image.avatar();
 
     let statusPromise = genStatusForPerson(Math.floor((Math.random() * 20) + 1));
-    
-    
 
     statusPromise.then((statuses) => {
-      Person.create({
-        firstName: firstName,
-        lastName: lastName,
-        age: age,
-        gender: gender,
-        school: school,
-        job: job,
-        email: email,
-        password: password,
-        profilePicture: profilePicture,
-        statuses: statuses
-      }, function (err, person) {
-        if (err) {
-          console.log(err);
-        } else {
-          // console.log(person.statuses);
-          console.log('all done');
-        }
-      });
+      Person
+        .create({
+          firstName: firstName,
+          lastName: lastName,
+          age: age,
+          gender: gender,
+          school: school,
+          job: job,
+          email: email,
+          password: password,
+          profilePicture: profilePicture,
+          statuses: statuses
+        }, function (err, person) {
+          if (err) {
+            console.log(err);
+          } else {
+            // console.log(person.statuses);
+            console.log('Person Created');
+          }
+        });
     });
   }
 };
-
-
-
-
