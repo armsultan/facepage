@@ -8020,7 +8020,7 @@ var Homepage = function (_React$Component) {
         var _this = _possibleConstructorReturn(this, (Homepage.__proto__ || Object.getPrototypeOf(Homepage)).call(this));
 
         _this.state = {
-            userId: "5929e89d1f045a3f03781254"
+            userId: "592f05605f6595748bd2bf61"
         };
         return _this;
     }
@@ -14009,8 +14009,14 @@ var PeopleDirectory = function (_React$Component) {
         var _this = _possibleConstructorReturn(this, (PeopleDirectory.__proto__ || Object.getPrototypeOf(PeopleDirectory)).call(this));
 
         _this.state = {
-            peopleList: []
+            peopleList: [],
+            friendIds: []
         };
+
+        _this.handleAddClick = _this.handleAddClick.bind(_this);
+
+        _this.handleRemoveClick = _this.handleRemoveClick.bind(_this);
+
         return _this;
     }
 
@@ -14020,18 +14026,69 @@ var PeopleDirectory = function (_React$Component) {
             var _this2 = this;
 
             _axios2.default.get('http://localhost:3000/api/person').then(function (response) {
-                console.log(response.data);
-                //let people = response.data;
+                //console.log(response.data);
                 _this2.setState({ peopleList: response.data });
+            }).catch(function (error) {
+                console.log(error);
+            });
+
+            _axios2.default.get('http://localhost:3000/api/person/' + this.props.userId).then(function (response) {
+                _this2.setState({ friendIds: response.data.friends });
+                console.log('my friends are: ' + _this2.state.friendIds);
             }).catch(function (error) {
                 console.log(error);
             });
         }
     }, {
+        key: 'handleAddClick',
+        value: function handleAddClick(event) {
+            //console.log('ADDING FRIEND: ' + event.target.value);
+            var friends = this.state.friendIds;
+            console.log('IS ' + event.target.value + ' OR ' + this.props.userId + ' IN MY FRIEND LIST: ' + friends + " ? " + friends.includes(event.target.value));
+
+            if (friends.includes(event.target.value) === false && event.target.value !== this.props.userId) {
+
+                friends.push(event.target.value);
+                console.log('NEW FREIND LIST TO BE UPDATED: ' + friends);
+
+                event.preventDefault(); // We want to prevent the default action since in react we want to prevent a page reload from a form submit https://developer.mozilla.org/samples/domref/dispatchEvent.html
+                _axios2.default.put('http://localhost:3000/api/person/' + this.props.userId, { friends: friends }).then(function (res) {
+                    console.log('UPDATED FRIENDS LIST: ', friends);
+                }).catch(function (error) {
+                    console.log(error);
+                });
+            } else {
+                console.log('FAILED: TRIED TO ADD AN EXISTING FRIEND OR YOURSELF');
+            }
+        }
+    }, {
+        key: 'handleRemoveClick',
+        value: function handleRemoveClick(event) {
+            //console.log('REMOVING FRIEND: ' + event.target.value);
+            var friends = this.state.friendIds;
+            console.log('IS ' + event.target.value + ' IN MY FRIEND LIST: ' + friends + " ? " + friends.includes(event.target.value));
+
+            event.preventDefault(); // We want to prevent the default action since in react we want to prevent a page reload from a form submit https://developer.mozilla.org/samples/domref/dispatchEvent.html
+
+            if (friends.includes(event.target.value) === true) {
+
+                friends.splice(friends.indexOf(event.target.value), 1); //remove element
+
+                _axios2.default.put('http://localhost:3000/api/person/' + this.props.userId, { friends: friends }).then(function (res) {
+
+                    console.log('UPDATED FRIENDS LIST: ', friends);
+                }).catch(function (error) {
+                    console.log(error);
+                });
+            } else {
+                console.log('FAILED: TRIED TO REMOVE AN NONEXISTENT FRIEND');
+            }
+        }
+    }, {
         key: 'render',
         value: function render() {
-            var test = this.state.peopleList;
-            console.log(test);
+            var _this3 = this;
+
             return _react2.default.createElement(
                 'div',
                 null,
@@ -14055,12 +14112,13 @@ var PeopleDirectory = function (_React$Component) {
                                     null,
                                     _react2.default.createElement(
                                         'a',
-                                        { href: '#' },
+                                        { href: '/profile/' + person._id },
                                         person.firstName,
                                         ' ',
                                         person.lastName
                                     )
                                 ),
+                                _react2.default.createElement('img', { src: person.profilePicture }),
                                 _react2.default.createElement(
                                     'p',
                                     null,
@@ -14085,12 +14143,12 @@ var PeopleDirectory = function (_React$Component) {
                                 { className: 'personActions' },
                                 _react2.default.createElement(
                                     'button',
-                                    { type: 'button' },
+                                    { type: 'button', value: person._id, onClick: _this3.handleAddClick },
                                     'Add as friend'
                                 ),
                                 _react2.default.createElement(
                                     'button',
-                                    { type: 'button' },
+                                    { type: 'button', value: person._id, onClick: _this3.handleRemoveClick },
                                     'Remove friend'
                                 )
                             )
@@ -14149,12 +14207,15 @@ var Profile = function (_React$Component) {
             profile: [],
             update: '',
             statusIds: [],
-            statusContent: []
+            statusContent: [],
+            friendIds: [],
+            friends: []
         };
 
         _this.handleChange = _this.handleChange.bind(_this);
         _this.handleClick = _this.handleClick.bind(_this);
         _this.updateStatuses = _this.updateStatuses.bind(_this);
+        _this.updateFriends = _this.updateFriends.bind(_this);
 
         return _this;
     }
@@ -14164,11 +14225,32 @@ var Profile = function (_React$Component) {
         value: function updateStatuses() {
             var _this2 = this;
 
-            this.state.statusIds.map(function (statusId) {
+            this.state.statusIds.map(function (id) {
 
-                _axios2.default.get('http://localhost:3000/api/status/' + statusId).then(function (res) {
-                    //this.setState({statusContent: this.state.statusContent.concat([res.data.content])});
-                    _this2.setState({ statusContent: _this2.state.statusContent.concat([res.data]) });
+                _axios2.default.get('http://localhost:3000/api/status/' + id).then(function (res) {
+                    _this2.setState({
+                        statusContent: _this2.state.statusContent.concat([res.data])
+                    });
+                }).catch(function (error) {
+                    console.log(error);
+                });
+            });
+        }
+    }, {
+        key: 'updateFriends',
+        value: function updateFriends() {
+            var _this3 = this;
+
+            this.state.friendIds.map(function (id) {
+                console.log(id);
+
+                _axios2.default.get('http://localhost:3000/api/person/' + id).then(function (res) {
+
+                    if (res.data !== "") {
+                        _this3.setState({
+                            friends: _this3.state.friends.concat([res.data])
+                        });
+                    }
                 }).catch(function (error) {
                     console.log(error);
                 });
@@ -14177,15 +14259,15 @@ var Profile = function (_React$Component) {
     }, {
         key: 'componentDidMount',
         value: function componentDidMount() {
-            var _this3 = this;
+            var _this4 = this;
 
             _axios2.default.get('http://localhost:3000/api/person/' + this.props.userId).then(function (response) {
-                _this3.setState({ profile: response.data });
-                _this3.setState({ statusIds: response.data.statuses });
+                _this4.setState({ profile: response.data });
+                _this4.setState({ statusIds: response.data.statuses });
+                _this4.setState({ friendIds: response.data.friends });
 
-                _this3.updateStatuses();
-                console.log(_this3.state.statusIds);
-                console.log(_this3.state.statusContent);
+                _this4.updateStatuses();
+                _this4.updateFriends();
             }).catch(function (error) {
                 console.log(error);
             });
@@ -14198,19 +14280,21 @@ var Profile = function (_React$Component) {
     }, {
         key: 'handleClick',
         value: function handleClick(event) {
-            var _this4 = this;
+            var _this5 = this;
 
             event.preventDefault(); // We want to prevent the default action since in react we want to prevent a page reload from a form submit https://developer.mozilla.org/samples/domref/dispatchEvent.html
             _axios2.default.post('http://localhost:3000/api/status/', { content: this.state.update }).then(function (res) {
                 console.log('UPDATED STATUS WITH ID: ', res.data._id);
 
-                _this4.setState({ statusIds: _this4.state.statusIds.concat([res.data._id]) });
-                console.log(_this4.state.statusIds);
+                _this5.setState({
+                    statusIds: _this5.state.statusIds.concat([res.data._id])
+                });
+                console.log(_this5.state.statusIds);
 
                 // Now update statuses object for the person
-                _axios2.default.put('http://localhost:3000/api/person/' + _this4.props.userId, { statuses: _this4.state.statusIds }).then(function (res) {
+                _axios2.default.put('http://localhost:3000/api/person/' + _this5.props.userId, { statuses: _this5.state.statusIds }).then(function (res) {
                     console.log('UPDATED PERSON WITH: ', res.data._id);
-                    _this4.updateStatuses(res.data.statuses);
+                    _this5.updateStatuses(res.data.statuses);
                 }).catch(function (error) {
                     console.log(error);
                 });
@@ -14247,6 +14331,7 @@ var Profile = function (_React$Component) {
                                 this.state.profile.lastName
                             )
                         ),
+                        _react2.default.createElement('img', { src: this.state.profile.profilePicture }),
                         _react2.default.createElement(
                             'p',
                             null,
@@ -14273,7 +14358,11 @@ var Profile = function (_React$Component) {
                             'form',
                             { action: '/' },
                             'Update Status:',
-                            _react2.default.createElement('input', { type: 'text', name: 'status', value: this.state.update, onChange: this.handleChange }),
+                            _react2.default.createElement('input', {
+                                type: 'text',
+                                name: 'status',
+                                value: this.state.update,
+                                onChange: this.handleChange }),
                             _react2.default.createElement('input', { type: 'submit', value: 'Submit', onClick: this.handleClick })
                         ),
                         _react2.default.createElement(
@@ -14289,11 +14378,41 @@ var Profile = function (_React$Component) {
                                     'li',
                                     { className: 'status', key: key },
                                     status.content,
-                                    ' ',
                                     _react2.default.createElement(
                                         'small',
                                         null,
                                         status.time
+                                    )
+                                );
+                            })
+                        )
+                    ),
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'friends' },
+                        _react2.default.createElement(
+                            'h3',
+                            null,
+                            'My Friends:'
+                        ),
+                        _react2.default.createElement(
+                            'ul',
+                            null,
+                            this.state.friends.slice(0).reverse().map(function (friend, key) {
+                                return _react2.default.createElement(
+                                    'li',
+                                    { className: 'friend', key: key },
+                                    _react2.default.createElement(
+                                        'h4',
+                                        null,
+                                        friend.firstName,
+                                        " ",
+                                        friend.lastName
+                                    ),
+                                    _react2.default.createElement(
+                                        'small',
+                                        null,
+                                        friend.job
                                     )
                                 );
                             })

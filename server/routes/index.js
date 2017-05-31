@@ -47,14 +47,15 @@ export default(app) => {
     });
 
     /* GET Status list /api */
-    app.get('/api', function (req, res) {
-        res.send('API is located at /api/status and /api/person');
+    app.get('/api', (req, res, err) =>{
+        res.status(200).send('API is located at /api/status and /api/person');
+
     });
 
     // ============= /api/status =============
 
     /* Generate Statuses /api */
-    app.get('/api/status/generate/:quantity', function (req, res) {
+    app.get('/api/status/generate/:quantity',  (req, res, err) => {
         console.log('Generating ' + req.params.quantity + 'Statuses');
         genStatus(req.params.quantity)
     });
@@ -164,9 +165,9 @@ export default(app) => {
 
     // ============= /api/people =============
     /* Generate People /api */
-    app.get('/api/person/generate/:quantity', function (req, res) {
-        console.log('Generating ' + req.params.quantity + 'People');
-        genPerson(req.params.quantity)
+    app.get('/api/person/generate/:quantity', (req, res) => {
+        console.log('Generating ' + req.params.quantity + ' Person(s)');
+        genPerson(req.params.quantity);
     });
 
     /* GET Status list /api/person */

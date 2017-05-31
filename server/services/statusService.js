@@ -48,13 +48,6 @@ export let genStatus = (number) => {
   }
 };
 
-// export let genStatusForPerson = (number) => {   let statusArray = [];   for
-// (let i = 0; i <= number; i++) {     let item = chance.sentence();     let
-// timeNow = Date();     Status.create({       content: item,       time:
-// timeNow     }, (err, entry) => {       if (err) {         return null; } else
-// {         statusArray[i] = entry._id;         console.log(entry._id);      }
-//  });   }   return statusArray; };
-
 export let genStatusForPerson = (number) => {
 
   // let statusArray = [];

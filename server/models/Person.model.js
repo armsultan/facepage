@@ -13,7 +13,10 @@ let PersonSchema = new Schema({
   job: String,
   email: { type: String, required: true, index: { unique: true }},
   password: { type: String, required: true },
-  statuses: [{ type: Schema.Types.ObjectId, ref: 'Status' }]
+  statuses: [{ type: Schema.Types.ObjectId, ref: 'Status' }],
+  friends: [{ type: Schema.Types.ObjectId, ref: 'Person' }],
+  profilePicture: String
+
 
 });
 
