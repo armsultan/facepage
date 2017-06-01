@@ -3,7 +3,7 @@ let mongoose = require('mongoose');
 let Schema = mongoose.Schema;
 
 // create a schema
-//gender, first name, last name, age, school, job, email, password
+//gender, first name, last name, age, school, job, email, password, statuses
 let PersonSchema = new Schema({
   firstName: { type: String, required: true },
   lastName: { type: String, required: true },
@@ -13,7 +13,10 @@ let PersonSchema = new Schema({
   job: String,
   email: { type: String, required: true, index: { unique: true }},
   password: { type: String, required: true },
-  statuses: [{ type: Schema.Types.ObjectId, ref: 'Status' }]
+  statuses: [{ type: Schema.Types.ObjectId, ref: 'Status' }],
+  friends: [{ type: Schema.Types.ObjectId, ref: 'Person' }],
+  profilePicture: String
+
 
 });
 
