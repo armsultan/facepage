@@ -14101,6 +14101,61 @@ var PeopleDirectory = function (_React$Component) {
                     'ul',
                     null,
                     this.state.peopleList.map(function (person, key) {
+
+                        var friendOptions = void 0;
+                        var friends = _this3.state.friendIds;
+                        var isFriend = friends.includes(person._id);
+                        console.log(friends);
+
+                        //console.log('IS ' + person._id + ' IN MY FRIEND LIST: ' + friends + " ? " + friends.includes(person._id));
+
+                        if (friends.includes(person._id)) {
+
+                            console.log(person._id + ' IS IN MY FRIEND LIST: ' + friends.includes(person._id));
+
+                            friendOptions = _react2.default.createElement(
+                                'div',
+                                { className: 'personActions' },
+                                _react2.default.createElement(
+                                    'button',
+                                    { type: 'button', value: person._id, onClick: _this3.handleRemoveClick },
+                                    'Remove friend'
+                                )
+                            );
+                        }
+
+                        if (person._id === _this3.props.userId) {
+
+                            console.log('THATS ME');
+
+                            friendOptions = _react2.default.createElement(
+                                'div',
+                                { className: 'personActions' },
+                                _react2.default.createElement(
+                                    'p',
+                                    null,
+                                    'That\'s me!'
+                                )
+                            );
+                        } else {
+                            console.log(person._id + ' IS IN MY FRIEND LIST: ' + friends.includes(person._id));
+
+                            friendOptions = _react2.default.createElement(
+                                'div',
+                                { className: 'personActions' },
+                                _react2.default.createElement(
+                                    'button',
+                                    { type: 'button', value: person._id, onClick: _this3.handleAddClick },
+                                    'Add as friend'
+                                ),
+                                _react2.default.createElement(
+                                    'button',
+                                    { type: 'button', value: person._id, onClick: _this3.handleRemoveClick },
+                                    'Remove friend'
+                                )
+                            );
+                        }
+
                         return _react2.default.createElement(
                             'li',
                             { className: 'person', key: key },
@@ -14138,20 +14193,7 @@ var PeopleDirectory = function (_React$Component) {
                                     )
                                 )
                             ),
-                            _react2.default.createElement(
-                                'div',
-                                { className: 'personActions' },
-                                _react2.default.createElement(
-                                    'button',
-                                    { type: 'button', value: person._id, onClick: _this3.handleAddClick },
-                                    'Add as friend'
-                                ),
-                                _react2.default.createElement(
-                                    'button',
-                                    { type: 'button', value: person._id, onClick: _this3.handleRemoveClick },
-                                    'Remove friend'
-                                )
-                            )
+                            friendOptions
                         );
                     })
                 )

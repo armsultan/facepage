@@ -101,6 +101,7 @@ export default class PeopleDirectory extends React.Component {
     }
 
     render() {
+
         return (
             <div>
                 <h1>People Directory:</h1>
@@ -109,6 +110,50 @@ export default class PeopleDirectory extends React.Component {
                         .state
                         .peopleList
                         .map((person, key) => {
+                                    
+
+                            let friendOptions;
+                            let friends = this.state.friendIds;
+                            let isFriend = friends.includes(person._id);
+                            console.log(friends);
+                            
+                            //console.log('IS ' + person._id + ' IN MY FRIEND LIST: ' + friends + " ? " + friends.includes(person._id));
+
+                            if (friends.includes(person._id)){
+
+                            console.log(person._id +  ' IS IN MY FRIEND LIST: ' + friends.includes(person._id));
+
+                                 friendOptions = (
+                                       <div className="personActions">
+                                        <button type="button" value={person._id} onClick={this.handleRemoveClick}>Remove friend</button>
+                                       </div>
+                                    )
+                            
+                            }
+
+                            if (person._id === this.props.userId){
+
+                            console.log('THATS ME');
+
+                                 friendOptions = (
+                                       <div className="personActions">
+                                        <p>That's me!</p>
+                                       </div>
+                                    )
+                            
+                            }
+
+                            else{
+                               console.log(person._id +  ' IS IN MY FRIEND LIST: ' + friends.includes(person._id));
+
+                                friendOptions = (
+                                    <div className="personActions">
+                                        <button type="button" value={person._id} onClick={this.handleAddClick}>Add as friend</button>
+                                        <button type="button" value={person._id} onClick={this.handleRemoveClick}>Remove friend</button>
+                                    </div>
+                                    )
+                            }
+
                             return (
                                 <li className="person" key={key}>
                                     <div className="personInfo">
@@ -123,13 +168,15 @@ export default class PeopleDirectory extends React.Component {
                                             <em className="school">{person.school}</em>
                                         </p>
                                     </div>
-                                    <div className="personActions">
+                                  {/*  <div className="personActions">
                                         <button type="button" value={person._id} onClick={this.handleAddClick}>Add as friend
                                         </button>
                                         <button type="button" value={person._id} onClick={this.handleRemoveClick}>Remove friend
                                         </button>
 
-                                    </div>
+                                    </div> */}
+
+                                     { friendOptions }
                                 </li>
                             )
                         })}
