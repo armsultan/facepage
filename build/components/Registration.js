@@ -40,7 +40,7 @@ export default class Registration extends React.Component {
 
 console.log(firstname + " " + lastname+ " " + lastname + " " + age + " " + gender + " " + school+ " " + job + " " + email + " " + password);
 
-axios.post('http://localhost:3000/api/person',{
+axios.post(`${process.env.HOST}:${process.env.PORT}/api/person`,{
     firstName: firstname,
   lastName: lastname,
   age: age,

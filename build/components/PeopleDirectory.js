@@ -23,7 +23,7 @@ export default class PeopleDirectory extends React.Component {
     componentDidMount() {
 
         axios
-            .get('http://localhost:3000/api/person')
+            .get(`${process.env.HOST}:${process.env.PORT}/api/person`)
             .then((response) => {
                 //console.log(response.data);
                 this.setState({peopleList: response.data});
@@ -33,7 +33,7 @@ export default class PeopleDirectory extends React.Component {
             });
 
         axios
-            .get('http://localhost:3000/api/person/' + this.props.userId)
+            .get(`${process.env.HOST}:${process.env.PORT}/api/person/` + this.props.userId)
             .then((response) => {
                 this.setState({friendIds: response.data.friends});
                 console.log('my friends are: ' + this.state.friendIds);
@@ -57,7 +57,7 @@ export default class PeopleDirectory extends React.Component {
 
             event.preventDefault(); // We want to prevent the default action since in react we want to prevent a page reload from a form submit https://developer.mozilla.org/samples/domref/dispatchEvent.html
             axios
-                .put('http://localhost:3000/api/person/' + this.props.userId, {friends: friends})
+                .put(`${process.env.HOST}:${process.env.PORT}/api/person/` + this.props.userId, {friends: friends})
                 .then(res => {
                     console.log('UPDATED FRIENDS LIST: ', friends);
                 })
@@ -84,7 +84,7 @@ export default class PeopleDirectory extends React.Component {
             friends.splice(friends.indexOf(event.target.value), 1); //remove element
 
             axios
-                .put('http://localhost:3000/api/person/' + this.props.userId, {friends: friends})
+                .put(`${process.env.HOST}:${process.env.PORT}/api/person/` + this.props.userId, {friends: friends})
                 .then(res => {
 
                     console.log('UPDATED FRIENDS LIST: ', friends);
