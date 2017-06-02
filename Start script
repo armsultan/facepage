@@ -1,2 +1,3 @@
-HOST=http://localhost PORT=3000 DB=facepage npm start
+HOST=http://localhost PORT=3000 DB=localhost/facepage npm start
 
+mongoimport -h ds157971.mlab.com:57971 -d heroku_v1gl2qz1 -c people -u heroku_v1gl2qz1 -p Hzx78q2u --file facepage.json
