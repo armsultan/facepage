@@ -11,4 +11,8 @@ to
 and run
 HOST=localhost PORT=3000 DB=localhost/facepage npm start
 
+<<<<<<< HEAD
 nothing works
+=======
+nothing that requires a get using that works
+>>>>>>> armand
