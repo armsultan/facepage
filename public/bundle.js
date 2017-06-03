@@ -8003,6 +8003,10 @@ var _Profile = __webpack_require__(142);
 
 var _Profile2 = _interopRequireDefault(_Profile);
 
+var _axios = __webpack_require__(41);
+
+var _axios2 = _interopRequireDefault(_axios);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -8022,16 +8026,40 @@ var Homepage = function (_React$Component) {
         _this.state = {
             userId: "592f2ae0329c0bef347d8858"
         };
+
+        _this.handleClick = _this.handleClick.bind(_this);
         return _this;
     }
 
     _createClass(Homepage, [{
         key: 'handleClick',
-        value: function handleClick() {}
+        value: function handleClick() {
+            var _this2 = this;
+
+            console.log('Looking up email: ' + this.refs.email.value + 'and password: ' + this.refs.password.value);
+            event.preventDefault(); // We want to prevent the default action since in react we want to prevent a page reload from a form submit https://developer.mozilla.org/samples/domref/dispatchEvent.html
+
+            _axios2.default.get('http://localhost:3000/api/person/email/' + this.refs.email.value).then(function (response) {
+                console.log(response.data[0]);
+                console.log('user id is:' + response.data[0]._id);
+                if (response.data[0]._id !== "") {
+
+                    if (response.data[0].password === _this2.refs.password.value) {
+
+                        _this2.setState({ userId: response.data[0]._id });
+                        console.log('Updated User ID: ' + _this2.state.userId);
+                    } else {
+                        console.log('PASSWORD ERROR');
+                    }
+                }
+            }).catch(function (error) {
+                console.log(error);
+            });
+        }
     }, {
         key: 'render',
         value: function render() {
-            var _this2 = this;
+            var _this3 = this;
 
             return _react2.default.createElement(
                 'div',
@@ -8051,26 +8079,30 @@ var Homepage = function (_React$Component) {
                     'div',
                     null,
                     _react2.default.createElement(
-                        'h3',
-                        null,
-                        'Login'
-                    ),
-                    _react2.default.createElement(
-                        'label',
-                        null,
-                        'Email: ',
-                        _react2.default.createElement('input', { type: 'email', ref: 'email' })
-                    ),
-                    _react2.default.createElement(
-                        'label',
-                        null,
-                        'Password: ',
-                        _react2.default.createElement('input', { type: 'password', ref: 'password' })
-                    ),
-                    _react2.default.createElement(
-                        'button',
-                        { type: 'button' },
-                        'Sign in'
+                        'form',
+                        { action: '/' },
+                        _react2.default.createElement(
+                            'h3',
+                            null,
+                            'Login'
+                        ),
+                        _react2.default.createElement(
+                            'label',
+                            null,
+                            'Email:',
+                            _react2.default.createElement('input', { type: 'email', ref: 'email', name: 'email' })
+                        ),
+                        _react2.default.createElement(
+                            'label',
+                            null,
+                            'Password:',
+                            _react2.default.createElement('input', { type: 'password', ref: 'password', name: 'password' })
+                        ),
+                        _react2.default.createElement(
+                            'button',
+                            { type: 'button', onClick: this.handleClick },
+                            'Sign in'
+                        )
                     ),
                     _react2.default.createElement(
                         'div',
@@ -8093,32 +8125,44 @@ var Homepage = function (_React$Component) {
                                 { to: '/signup' },
                                 'Sign-Up'
                             ),
-                            _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: '/signup', render: function render(routeProps) {
-                                    return _react2.default.createElement(_Registration2.default, _extends({}, _this2.state, _this2.props, routeProps));
+                            _react2.default.createElement(_reactRouterDom.Route, {
+                                exact: true,
+                                path: '/signup',
+                                render: function render(routeProps) {
+                                    return _react2.default.createElement(_Registration2.default, _extends({}, _this3.state, _this3.props, routeProps));
                                 } }),
                             _react2.default.createElement(
                                 _reactRouterDom.Link,
                                 { to: '/Profile' },
                                 'My Profile'
                             ),
-                            _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: '/Profile', render: function render(routeProps) {
-                                    return _react2.default.createElement(_Profile2.default, _extends({}, _this2.state, _this2.props, routeProps));
+                            _react2.default.createElement(_reactRouterDom.Route, {
+                                exact: true,
+                                path: '/Profile',
+                                render: function render(routeProps) {
+                                    return _react2.default.createElement(_Profile2.default, _extends({}, _this3.state, _this3.props, routeProps));
                                 } }),
                             _react2.default.createElement(
                                 _reactRouterDom.Link,
                                 { to: '/findFriends' },
                                 'Find Friends'
                             ),
-                            _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: '/findFriends', render: function render(routeProps) {
-                                    return _react2.default.createElement(_PeopleDirectory2.default, _extends({}, _this2.state, _this2.props, routeProps));
+                            _react2.default.createElement(_reactRouterDom.Route, {
+                                exact: true,
+                                path: '/findFriends',
+                                render: function render(routeProps) {
+                                    return _react2.default.createElement(_PeopleDirectory2.default, _extends({}, _this3.state, _this3.props, routeProps));
                                 } }),
                             _react2.default.createElement(
                                 _reactRouterDom.Link,
                                 { to: '/Registration' },
                                 'Sign-Up'
                             ),
-                            _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: '/Registration', render: function render(routeProps) {
-                                    return _react2.default.createElement(_Registration2.default, _extends({}, _this2.state, _this2.props, routeProps));
+                            _react2.default.createElement(_reactRouterDom.Route, {
+                                exact: true,
+                                path: '/Registration',
+                                render: function render(routeProps) {
+                                    return _react2.default.createElement(_Registration2.default, _extends({}, _this3.state, _this3.props, routeProps));
                                 } })
                         )
                     )

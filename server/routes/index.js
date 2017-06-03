@@ -170,7 +170,7 @@ export default(app) => {
         genPerson(req.params.quantity);
     });
 
-    /* GET Status list /api/person */
+    /* GET Person list /api/person */
     app.get('/api/person', (req, res) => {
         getAllPerson({}, (err, data) => {
             if (!err) {
@@ -187,7 +187,9 @@ export default(app) => {
         });
     });
 
-    /* GET Status by id /api/person/:id */
+
+
+    /* GET Person by id /api/person/:id */
     app.get('/api/person/:id', function (req, res) {
         console.log('getting Person with ID ' + req.params.id);
         getPerson({
@@ -205,6 +207,28 @@ export default(app) => {
             }
         });
     });
+
+        /* GET Person by email /api/person/email/:id */
+    app.get('/api/person/email/:id', function (req, res) {
+        console.log('getting Person with email ' + req.params.id);
+        getAllPerson({
+            email: req.params.id
+        }, function (err, item) {
+            if (!err) {
+                console.log(item);
+                res
+                    .status(200)
+                    .send(item);
+            } else {
+                res
+                    .status(400)
+                    .send('error finding person')
+            }
+        });
+    });
+
+
+    /* POST (add) Person item /api/status/:id */
 
     app.post('/api/person', (req, res) => {
         console.log(req.body);
@@ -225,7 +249,7 @@ export default(app) => {
         });
     });
 
-    /* DELETE Status item /api/status/:id */
+    /* DELETE Person item /api/status/:id */
     app.delete('/api/person/:id', function (req, res) {
         deletePerson({
             _id: req.params.id
