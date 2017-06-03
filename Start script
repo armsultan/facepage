@@ -3,12 +3,6 @@ HOST=localhost PORT=3000 DB=localhost/facepage npm start
 mongoimport -h ds157971.mlab.com:57971 -d heroku_v1gl2qz1 -c people -u heroku_v1gl2qz1 -p Hzx78q2u --file facepage.json
 
 
-how should i change my hardcoded urls for heroku? when i change:
-`.get('http://localhost:3000/api/person/' + this.props.userId)`
-to
-`.get(`${process.env.HOST}:${process.env.PORT}/api/person`)`
-
-and run
 HOST=localhost PORT=3000 DB=localhost/facepage npm start
 
 <<<<<<< HEAD

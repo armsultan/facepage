@@ -23,7 +23,7 @@ export default class Homepage extends React.Component {
         event.preventDefault(); // We want to prevent the default action since in react we want to prevent a page reload from a form submit https://developer.mozilla.org/samples/domref/dispatchEvent.html
 
         axios
-            .get('http://localhost:3000/api/person/email/' + this.refs.email.value)
+            .get('/api/person/email/' + this.refs.email.value)
             .then((response) => {
                 console.log(response.data[0]);
                 console.log('user id is:' + response.data[0]._id);
