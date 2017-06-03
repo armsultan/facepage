@@ -37,7 +37,7 @@ export default class Profile extends React.Component {
             .map((id) => {
 
                 axios
-                    .get('http://localhost:3000/api/status/' + id)
+                    .get('/api/status/' + id)
                     .then(res => {
                         this.setState({
                             statusContent: this
@@ -60,7 +60,7 @@ export default class Profile extends React.Component {
                 console.log(id);
 
                 axios
-                    .get('http://localhost:3000/api/person/' + id)
+                    .get('/api/person/' + id)
                     .then(res => {
 
                         if(res.data !== ""){
@@ -77,7 +77,7 @@ export default class Profile extends React.Component {
     componentDidMount() {
 
         axios
-            .get('http://localhost:3000/api/person/' + this.props.userId)
+            .get('/api/person/' + this.props.userId)
             .then((response) => {
                 this.setState({profile: response.data});
                 this.setState({statusIds: response.data.statuses});
@@ -101,7 +101,7 @@ export default class Profile extends React.Component {
     handleClick(event) {
         event.preventDefault(); // We want to prevent the default action since in react we want to prevent a page reload from a form submit https://developer.mozilla.org/samples/domref/dispatchEvent.html
         axios
-            .post('http://localhost:3000/api/status/', {content: this.state.update})
+            .post('/api/status/', {content: this.state.update})
             .then(res => {
                 console.log('UPDATED STATUS WITH ID: ', res.data._id);
 
@@ -115,7 +115,7 @@ export default class Profile extends React.Component {
 
                 // Now update statuses object for the person
                 axios
-                    .put('http://localhost:3000/api/person/' + this.props.userId, {statuses: this.state.statusIds})
+                    .put('/api/person/' + this.props.userId, {statuses: this.state.statusIds})
                     .then(res => {
                         console.log('UPDATED PERSON WITH: ', res.data._id);
                         this.updateStatuses(res.data.statuses);

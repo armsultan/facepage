@@ -8039,7 +8039,7 @@ var Homepage = function (_React$Component) {
             console.log('Looking up email: ' + this.refs.email.value + 'and password: ' + this.refs.password.value);
             event.preventDefault(); // We want to prevent the default action since in react we want to prevent a page reload from a form submit https://developer.mozilla.org/samples/domref/dispatchEvent.html
 
-            _axios2.default.get('http://localhost:3000/api/person/email/' + this.refs.email.value).then(function (response) {
+            _axios2.default.get('/api/person/email/' + this.refs.email.value).then(function (response) {
                 console.log(response.data[0]);
                 console.log('user id is:' + response.data[0]._id);
                 if (response.data[0]._id !== "") {
@@ -14069,14 +14069,14 @@ var PeopleDirectory = function (_React$Component) {
         value: function componentDidMount() {
             var _this2 = this;
 
-            _axios2.default.get('http://localhost:3000/api/person').then(function (response) {
+            _axios2.default.get('/api/person').then(function (response) {
                 //console.log(response.data);
                 _this2.setState({ peopleList: response.data });
             }).catch(function (error) {
                 console.log(error);
             });
 
-            _axios2.default.get('http://localhost:3000/api/person/' + this.props.userId).then(function (response) {
+            _axios2.default.get('/api/person/' + this.props.userId).then(function (response) {
                 _this2.setState({ friendIds: response.data.friends });
                 console.log('my friends are: ' + _this2.state.friendIds);
             }).catch(function (error) {
@@ -14096,7 +14096,7 @@ var PeopleDirectory = function (_React$Component) {
                 console.log('NEW FREIND LIST TO BE UPDATED: ' + friends);
 
                 event.preventDefault(); // We want to prevent the default action since in react we want to prevent a page reload from a form submit https://developer.mozilla.org/samples/domref/dispatchEvent.html
-                _axios2.default.put('http://localhost:3000/api/person/' + this.props.userId, { friends: friends }).then(function (res) {
+                _axios2.default.put('/api/person/' + this.props.userId, { friends: friends }).then(function (res) {
                     console.log('UPDATED FRIENDS LIST: ', friends);
                 }).catch(function (error) {
                     console.log(error);
@@ -14118,7 +14118,7 @@ var PeopleDirectory = function (_React$Component) {
 
                 friends.splice(friends.indexOf(event.target.value), 1); //remove element
 
-                _axios2.default.put('http://localhost:3000/api/person/' + this.props.userId, { friends: friends }).then(function (res) {
+                _axios2.default.put('/api/person/' + this.props.userId, { friends: friends }).then(function (res) {
 
                     console.log('UPDATED FRIENDS LIST: ', friends);
                 }).catch(function (error) {
@@ -14313,7 +14313,7 @@ var Profile = function (_React$Component) {
 
             this.state.statusIds.map(function (id) {
 
-                _axios2.default.get('http://localhost:3000/api/status/' + id).then(function (res) {
+                _axios2.default.get('/api/status/' + id).then(function (res) {
                     _this2.setState({
                         statusContent: _this2.state.statusContent.concat([res.data])
                     });
@@ -14330,7 +14330,7 @@ var Profile = function (_React$Component) {
             this.state.friendIds.map(function (id) {
                 console.log(id);
 
-                _axios2.default.get('http://localhost:3000/api/person/' + id).then(function (res) {
+                _axios2.default.get('/api/person/' + id).then(function (res) {
 
                     if (res.data !== "") {
                         _this3.setState({
@@ -14347,7 +14347,7 @@ var Profile = function (_React$Component) {
         value: function componentDidMount() {
             var _this4 = this;
 
-            _axios2.default.get('http://localhost:3000/api/person/' + this.props.userId).then(function (response) {
+            _axios2.default.get('/api/person/' + this.props.userId).then(function (response) {
                 _this4.setState({ profile: response.data });
                 _this4.setState({ statusIds: response.data.statuses });
                 _this4.setState({ friendIds: response.data.friends });
@@ -14369,7 +14369,7 @@ var Profile = function (_React$Component) {
             var _this5 = this;
 
             event.preventDefault(); // We want to prevent the default action since in react we want to prevent a page reload from a form submit https://developer.mozilla.org/samples/domref/dispatchEvent.html
-            _axios2.default.post('http://localhost:3000/api/status/', { content: this.state.update }).then(function (res) {
+            _axios2.default.post('/api/status/', { content: this.state.update }).then(function (res) {
                 console.log('UPDATED STATUS WITH ID: ', res.data._id);
 
                 _this5.setState({
@@ -14378,7 +14378,7 @@ var Profile = function (_React$Component) {
                 console.log(_this5.state.statusIds);
 
                 // Now update statuses object for the person
-                _axios2.default.put('http://localhost:3000/api/person/' + _this5.props.userId, { statuses: _this5.state.statusIds }).then(function (res) {
+                _axios2.default.put('/api/person/' + _this5.props.userId, { statuses: _this5.state.statusIds }).then(function (res) {
                     console.log('UPDATED PERSON WITH: ', res.data._id);
                     _this5.updateStatuses(res.data.statuses);
                 }).catch(function (error) {
@@ -14594,7 +14594,7 @@ var Registration = function (_React$Component) {
 
                 console.log(firstname + " " + lastname + " " + lastname + " " + age + " " + gender + " " + school + " " + job + " " + email + " " + password);
 
-                _axios2.default.post('http://localhost:3000/api/person', {
+                _axios2.default.post('/api/person', {
                     firstName: firstname,
                     lastName: lastname,
                     age: age,
