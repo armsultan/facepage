@@ -67,25 +67,27 @@ console.log(error)
     //     }
         return (
             <div>
-                <h1>Registration</h1>
                 <div>
-                    <label>Email: <input type="email" ref="email" /></label><br />
-                    <label>Password: <input type="password" ref="password" /></label><br />
-                    <label>Confirm Password: <input type="password" ref="passwordConfirm" /></label><br />
-                    <label>First Name: <input type="text" ref="firstname" /></label><br />
-                    <label>Last Name: <input type="text" ref="lastname" /></label><br />
-                    <label>Age: <input type="number" ref="age" /></label><br />
-                    <label >Gender: 
-                        <input type="radio" name="genders" value="male" ref="male"/>Male
-                        <input type="radio" name="genders" value="female" ref="female"/>Female
-                        <input type="radio" name="genders" value="other" ref="other"/>Other
-                    </label><br />
-                    <label>School: <input type="text" ref="school" /></label><br />
-                    <label>Job: <input type="text" ref="job" /></label><br />
-                    <button type="button" onClick={this.handleClick}>Register</button>
-                    <div>- or -</div>
                     <div>
-                        <Link to="/">Home</Link>
+                    <h4>Please enter your information</h4>
+                    </div>
+                    <label><input placeholder="Email" type="email" ref="email" /></label><br />
+                    <label><input placeholder="Password" type="password" ref="password" /></label><br />
+                    <label><input placeholder="Confirm Password" type="password" ref="passwordConfirm" /></label><br />
+                    <label><input placeholder="First Name" type="text" ref="firstname" /></label><br />
+                    <label><input placeholder="Last Name" type="text" ref="lastname" /></label><br />
+                    <label><input placeholder="Age" type="number" ref="age" /></label><br />
+                    <label><input placeholder="School" type="text" ref="school" /></label><br />
+                    <label><input placeholder="Occupation" type="text" ref="job" /></label><br />
+                    <label>
+                        <input class="radio" type="radio" name="genders" value="male" ref="male"/>Male
+                        <input class="radio" type="radio" name="genders" value="female" ref="female"/>Female
+                        <input class="radio" type="radio" name="genders" value="other" ref="other"/>Other
+                    </label><br />
+                    <button type="button" onClick={this.handleClick}>Register</button><br/><br/>
+                    
+                    <div>
+                        <Link to="/">Return to Homepage</Link>
                     </div>
                 </div>
             </div>
