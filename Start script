@@ -1,12 +1,5 @@
+mongoimport -h ds163301.mlab.com:63301 -d heroku_fr2tt1gk -c people -u <username> -p <password> --file facepage.json
+
+mongoimport -h ds163301.mlab.com:63301 -d heroku_fr2tt1gk -c status -u <username> -p <password> --file status.json
+
 HOST=localhost PORT=3000 DB=localhost/facepage npm start
-
-mongoimport -h ds157971.mlab.com:57971 -d heroku_v1gl2qz1 -c people -u heroku_v1gl2qz1 -p Hzx78q2u --file facepage.json
-
-
-HOST=localhost PORT=3000 DB=localhost/facepage npm start
-
-<<<<<<< HEAD
-nothing works
-=======
-nothing that requires a get using that works
->>>>>>> armand
