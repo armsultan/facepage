@@ -36,5 +36,5 @@ mongoose.connect(`mongodb://${process.env.DB}`);
 Routes(app);
 
 app.listen(process.env.PORT, () => {
-  console.log(`Example app listening on port ${process.env.HOST}:${process.env.PORT}!`)
+  console.log(`Example app listening on port ${process.env.PORT}!`)
 });
