@@ -6,6 +6,7 @@ export default class Registration extends React.Component {
     constructor() {
         super();
         this.handleClick = this.handleClick.bind(this);
+        this.handleClickHome = this.handleClickHome.bind(this);
     }
     determineGender(){
         let male = this.refs.male.checked;
@@ -25,6 +26,9 @@ export default class Registration extends React.Component {
         return passbox === confirmbox;
     }
         
+    handleClickHome() {
+        this.props.history.push("/");
+    }
 
     handleClick(event) {
         if(this.validPasswords()){
@@ -71,23 +75,24 @@ console.log(error)
                     <div>
                     <h4>Please enter your information</h4>
                     </div>
-                    <label><input placeholder="Email" type="email" ref="email" /></label><br />
-                    <label><input placeholder="Password" type="password" ref="password" /></label><br />
-                    <label><input placeholder="Confirm Password" type="password" ref="passwordConfirm" /></label><br />
-                    <label><input placeholder="First Name" type="text" ref="firstname" /></label><br />
-                    <label><input placeholder="Last Name" type="text" ref="lastname" /></label><br />
-                    <label><input placeholder="Age" type="number" ref="age" /></label><br />
-                    <label><input placeholder="School" type="text" ref="school" /></label><br />
-                    <label><input placeholder="Occupation" type="text" ref="job" /></label><br />
+                    <label><input placeholder="Email" type="email" ref="email" /></label><br /><br />
+                    <label><input placeholder="Password" type="password" ref="password" /></label><br /><br />
+                    <label><input placeholder="Confirm Password" type="password" ref="passwordConfirm" /></label><br /><br />
+                    <label><input placeholder="First Name" type="text" ref="firstname" /></label><br /><br />
+                    <label><input placeholder="Last Name" type="text" ref="lastname" /></label><br /><br />
+                    <label><input placeholder="Age" type="number" ref="age" /></label><br /><br />
+                    <label><input placeholder="School" type="text" ref="school" /></label><br /><br />
+                    <label><input placeholder="Occupation" type="text" ref="job" /></label><br /><br />
                     <label>
                         <input class="radio" type="radio" name="genders" value="male" ref="male"/>Male
                         <input class="radio" type="radio" name="genders" value="female" ref="female"/>Female
                         <input class="radio" type="radio" name="genders" value="other" ref="other"/>Other
-                    </label><br />
-                    <button type="button" onClick={this.handleClick}>Register</button><br/><br/>
+                    </label><br /><br />
+                    <button className="linkButton" type="button" onClick={this.handleClick}>Register</button><br/><br/>
                     
                     <div>
-                        <Link to="/">Return to Homepage</Link>
+                        <button className="linkButton" type="button" onClick={this.handleClickHome}>Return to Homepage</button>
+                        {/*<Link to="/">Return to Homepage</Link>*/}
                     </div>
                 </div>
             </div>

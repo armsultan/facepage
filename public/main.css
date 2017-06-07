@@ -17,10 +17,15 @@ h1 {
 }
 
 
-
-#radio {
+.radio {
     font-size: 10px;
     font-family: sans-serif;
+}
+
+.linkButton {
+  text-decoration-line: none;
+  font-weight: bold;
+  color: black;
 }
 
 [class*=col-lg-]{
