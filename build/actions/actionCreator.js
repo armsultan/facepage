@@ -18,3 +18,35 @@ export let logout = () => {
         userId
     };
 }
+
+export let loadFeelings = (feelings) => {
+    console.log('dispatch LOADFEELINGS');
+    return {
+        type: 'LOADFEELINGS',
+        feelings
+    };
+}
+
+export let createFeeling = (feeling) => {
+    console.log('dispatch CREATEFEELING');
+    return {
+        type: 'CREATEFEELING',
+        feeling
+    };
+}
+
+export let deleteFeeling = (feeling) => {
+    console.log('dispatch DELETEFEELING');
+    return {
+        type: 'DELETEFEELING',
+        feeling
+    };
+}
+
+export let updateFeeling = (feeling) => {
+    console.log('dispatch UPDATEFEELING');
+    return {
+        type: 'UPDATEFEELING',
+        feeling
+    };
+}

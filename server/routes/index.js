@@ -6,17 +6,9 @@
 // import {createTask} from '../services/taskService'; import {createUser} from
 // '../services/userService';
 
-import {
-    deleteStatus,
-    getStatus,
-    putStatus,
-    genStatus,
-    getAllStatus,
-    createStatus
-} from '../services/statusService';
+
 import {
     deletePerson,
-    genPerson,
     getPerson,
     putPerson,
     getAllPerson,
@@ -34,7 +26,7 @@ export default(app) => {
 
     app.post('/user', (reg,res) => {
         console.log(req.body);
-        createuser(req.body, (err,data) => {
+        createPerson(req.body, (err,data) => {
             if(!err){
                 console.log(data);
             }
@@ -44,6 +36,10 @@ export default(app) => {
 
     app.get('/Registration', (req, res) => {
         res.render('Registration');
+    });
+
+    app.get('/Update', (req, res) => {
+        res.render('Update');
     });
 
     /* GET Status list /api */

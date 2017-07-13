@@ -1,11 +1,10 @@
 import React from 'react';
 import { BrowserRouter, browserHistory, Route, Switch, Link, Redirect } from 'react-router-dom';
-
-
-
 import Registration from './Registration';
-import PeopleDirectory from './PeopleDirectory';
+import Update from './Update';
 import Profile from './Profile';
+import axios from 'axios';
+
 
 export default class Homepage extends React.Component{
     constructor(){
@@ -16,8 +15,12 @@ export default class Homepage extends React.Component{
         };
         this.handleClick = this.handleClick.bind(this); 
         this.handleClickProfile = this.handleClickProfile.bind(this); 
-        this.handleClickFriends = this.handleClickFriends.bind(this); 
+        this.handleClickWest = this.handleClickWest.bind(this);
+        // this.handleClickWest2 = this.handleClickWest2.bind(this);
         this.handleClickSignup = this.handleClickSignup.bind(this); 
+        // this.handleClickDelete = this.handleClickDelete.bind(this, id);
+        
+        this.handleClickUpdateLink = this.handleClickUpdateLink.bind(this);
     }
 
       validPasswords(){ 
@@ -34,72 +37,126 @@ export default class Homepage extends React.Component{
         // } 
         console.log(email + " " + password) 
  
- } 
+    } 
+
+    handleClickWest(event){
+    
+    }
+
+
+
+
 
     handleClickProfile(event) {
        
         BrowserRouter.push("/Profile");
   }
 
-     handleClickFriends(event) {
-        browserHistory.push("/findFriends");
+   
+    handleClick(event) {
+        let feeling = this.refs.feeling.value;
+
+        axios.post('/api/person',{
+            feeling: feeling,
+            
+        })
+        .then(res => {
+        axios.get('/api/person/' + res.data._id).then((response) => {
+            this.props.createFeelings(response.data);
+        });   
+        console.log('WE HAVE REGISTERED A Feeling with ID ', res.data._id);
+        })
+        .catch(error => {
+        console.log(error)  
+        })
+    }
+    
+    
+
+    handleClickDelete(id, event) {
+        let remove = this.refs.remove;
+        
+
+        console.log(id)
+        axios.delete('/api/person/' + id,{})
+        .then(res => {
+            this.props.deleteFeeling(res.data._id);
+        console.log('WE HAVE DELETED A Feeling with ID ', res.data._id);
+        })
+        .catch(error => {
+        console.log(error)  
+        })
+    }
+    
+
+   
+        
+    handleClickUpdateLink(event) {
+        this.props.history.push("/Update/" + id);
     }
 
     handleClickSignup(event) {
         this.props.history.push("/Registration");
     }
 
+    componentWillMount(){
+        axios.get('/api/person').then((response) => {
+            this.props.loadFeelings(response.data);
+        });      
+    }
+
+
+
+
+
+
+    
+
     render(){
-            
+        let myFeelings = [];
+        if(this.props.feelings && this.props.feelings.length > 0){
+            myFeelings = this.props.feelings.map(feeling => <div key={feeling._id}>{feeling.feeling}<button ref="remove" key={feeling._id} onClick={this.handleClickDelete.bind(this, feeling._id)}>X</button></div>);
+        }
         return (
             <div>
-                <h2>Welcome to the Almand Network!</h2>
-                <h3>userUd: {this.state.userId}</h3>
-            <BrowserRouter history={browserHistory}>                    
-                    <div>
-                        <button>
-                        <Link className="linkButton" to="/Profile">My Profile</Link>
-                        </button>
-                        <Route exact path="/findFriends" render={(routeProps)=> <PeopleDirectory {...this.state} {...this.props} {...routeProps} />} /><br/>
+                <h3 className="header">Feel Yourself!</h3>
+                {/*<h3>userUd: {this.state.userId}</h3>*/}
+                                
+                <div className="nav">
+                    <ul>
+                        <li>
                         
-                        <button>
-                       <Link className="linkButton" to="/findFriends">Find Friends</Link>
-                       </button>
-                        <Route exact path="/findFriends" render={(routeProps)=> <PeopleDirectory {...this.state} {...this.props} {...routeProps} />} /><br/>
-                    </div>
-             </BrowserRouter>
-                <div>
-                    <h3>Login</h3> 
-                    <label><input placeholder="Email" type="email" ref="email" /></label><br/><br/>
-                    <label><input placeholder="Password" type="password" ref="password" /></label><br/><br/>
-                    <button className="linkButton" type="button" onClick={this.handleClick}>Sign in</button><br/><br/>
-                    <div> 
-                        or
-                    </div><br/>
+                           
+                            <div>
+                            <h6>How's it Hanging?</h6>
+                            <input placeholder="Tell me about it" type="text" ref="feeling" /><label></label><br /><br />
 
+                            <button className="linkButton" type="button" onClick={this.handleClick}>Cherish this feeling</button><br/><br/>
+                            {/*<BrowserRouter>
+                                <div>
+                                    <Route path="/" render={(routeProps) => <Homepage {...this.props} {...routeProps}/>} />*/}
+                                    <Link to="/Update">Update</Link>
+                                    {/*<Route
+                                        exact
+                                        path="/Update"
+                                        render={(routeProps) => <Update {...this.props} {...routeProps}/>}/>
+                                </div>
+                            </BrowserRouter>       */}
+                            </div>
+                        {/*<Link className="linkButton" to="/Profile">My Feelings</Link>*/}
+                        
+                        </li>
+                         
+
+                    </ul>
+                </div>
             
-                    <BrowserRouter>
-                        <div>
-                        <button>
-                        <Link className="linkButton" to="Registration">Click here to sign up</Link>
-                        </button>
-                        <Route exact path="/Registration" render={(routeProps)=> <Registration {...this.state} {...this.props} {...routeProps} />} /><br/>
-                        
-                        
-                       
-                        
 
-                        
-                        {/*<button type="button" onClick={this.handleClickSignup}>Click here to sign up</button><br/>*/}
-                       
+                {myFeelings}
+    
 
-                        {/*<Link to="/Registration">Click here to sign up</Link>
-                        <Route exact path="/Registration" render={(routeProps)=> <Registration {...this.state} {...this.props} {...routeProps} />} /><br/>*/}
-                        </div>   
-                    </BrowserRouter>
+               
 
-
-                </div> 
             </div> 
         );
     }

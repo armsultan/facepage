@@ -30,7 +30,7 @@ app.use(bodyParser.urlencoded({
   extended: true
 }));
 // connection string. 
-mongoose.connect(`mongodb://${process.env.DB}`);
+mongoose.connect(`mongodb://localhost/${process.env.DB}`);
 
 Routes(app);
 

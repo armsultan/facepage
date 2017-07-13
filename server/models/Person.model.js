@@ -5,16 +5,8 @@ let Schema = mongoose.Schema;
 // create a schema
 //gender, first name, last name, age, school, job, email, password, statuses
 let PersonSchema = new Schema({
-  firstName: { type: String, required: true },
-  lastName: { type: String, required: true },
-  age: { type: String, required: true },
-  gender: {type: String, enum: ["Male", "Female", "Other"]},
-  school: String,
-  job: String,
-  email: { type: String, required: true, index: { unique: true }},
-  password: { type: String, required: true },
-  statuses: [{ type: Schema.Types.ObjectId, ref: 'Status' }]
-
+  feeling: {type: String, required: true},
+  date: {type: Date, default: Date.now}
 });
 
 // the schema is useless so far
